@@ -1,9 +1,23 @@
+import Navigation from "@/components/Navigation";
+import Hero from "@/components/sections/Hero";
+import About from "@/components/sections/About";
+import Projects from "@/components/sections/Projects";
+import Skills from "@/components/sections/Skills";
+import Experience from "@/components/sections/Experience";
+import Contact from "@/components/sections/Contact";
+import Footer from "@/components/Footer";
+
 export default function Home() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-red-500 md:bg-green-500">
-      <h1 className="text-white text-4xl font-bold underline">
-        Tailwind v4 works
-      </h1>
-    </div>
+    <main className="relative">
+      <Navigation />
+      <Hero />
+      <About />
+      <Projects />
+      <Skills />
+      <Experience />
+      <Contact />
+      <Footer />
+    </main>
   );
 }
