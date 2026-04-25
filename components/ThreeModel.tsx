@@ -23,9 +23,10 @@ export default function ThreeModel() {
         camera={{ position: [0, 0, 3], fov: 45 }}
         gl={{ antialias: true, alpha: true }}
       >
-        <ambientLight intensity={0.6} />
-        <directionalLight position={[2, 2, 3]} intensity={1.1} castShadow />
-        <directionalLight position={[-2, -1, -3]} intensity={0.4} />
+        <ambientLight intensity={4.0} />
+        
+        <directionalLight position={[2, 2, 3]} intensity={2.1} castShadow />
+        <directionalLight position={[-2, -1, -3]} intensity={1.4} />
 
         <Helmet />
 
