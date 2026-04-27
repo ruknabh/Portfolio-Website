@@ -66,7 +66,7 @@ function ResumeModal({
                 </button>
                 <button
                   onClick={onConfirm}
-                  className="flex-1 py-3 bg-foreground text-background font-helvetica font-black text-[10px] uppercase tracking-widest border-4 border-foreground shadow-[4px_4px_0_0] shadow-accent-orange hover:translate-x-[4px] hover:translate-y-[4px] hover:shadow-none transition-all duration-200"
+                  className="flex-1 py-3 bg-foreground text-background font-helvetica font-black text-[10px] uppercase tracking-widest border-4 border-foreground shadow-[4px_4px_0_0] shadow-accent-orange hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all duration-200"
                 >
                   Download
                 </button>
@@ -199,11 +199,11 @@ export default function Contact() {
                           bg-background text-foreground
                           border-4 border-background
                           shadow-[4px_4px_0_0] shadow-foreground/30
-                          hover:translate-x-[4px] hover:translate-y-[4px] hover:shadow-none
+                          hover:translate-x-1 hover:translate-y-1 hover:shadow-none
                           transition-all duration-200
                         "
                       >
-                        <Icon className="w-[18px] h-[18px]" />
+                        <Icon className="w-4.5 h-4.5" />
                       </a>
                     );
                   })}
@@ -224,7 +224,7 @@ export default function Contact() {
                     border-4 border-background
                     font-helvetica font-black text-xs uppercase tracking-widest
                     shadow-[5px_5px_0_0] shadow-foreground/30
-                    hover:translate-x-[5px] hover:translate-y-[5px] hover:shadow-none
+                    hover:translate-x-1.25 hover:translate-y-1.25 hover:shadow-none
                     transition-all duration-200
                   "
                 >
@@ -351,7 +351,7 @@ export default function Contact() {
                           border-4 border-background
                           font-helvetica font-black text-xs uppercase tracking-widest
                           shadow-[6px_6px_0_0] shadow-foreground/30
-                          hover:translate-x-[6px] hover:translate-y-[6px] hover:shadow-none
+                          hover:translate-x-1.5over:translate-y-[6px] hover:shadow-none
                           transition-all duration-200
                         "
                       >

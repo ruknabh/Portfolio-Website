@@ -2,193 +2,180 @@
 
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
-import { MapPin, Code, Briefcase, Globe } from "lucide-react";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { MapPin } from "lucide-react";
 
 export default function About() {
   const sectionRef = useRef<HTMLDivElement>(null);
 
-  // Fixed scroll progress - ends earlier to ensure animations complete
   const { scrollYProgress } = useScroll({
     target: sectionRef,
-    offset: ["start end", "center center"]
+    offset: ["start end", "center center"],
   });
 
-  // Subtle upward lift
+  const opacity = useTransform(scrollYProgress, [0, 0.35], [0, 1]);
   const sectionY = useTransform(scrollYProgress, [0, 0.5], [60, 0]);
-  
-  // Right-to-left entrance - ALL END AT 0 with proper timing
-  const profileX = useTransform(scrollYProgress, [0, 0.6], [150, 0]);
-  const headingX = useTransform(scrollYProgress, [0.05, 0.65], [100, 0]);
-  const textX = useTransform(scrollYProgress, [0.1, 0.7], [80, 0]);
-  const statsX = useTransform(scrollYProgress, [0.15, 0.75], [60, 0]);
-  
-  // Smooth fade in
-  const opacity = useTransform(scrollYProgress, [0, 0.3], [0, 1]);
 
-  const stats = [
-    { label: "Experience", value: "2+ Years", icon: Briefcase },
-    { label: "Tech Stack", value: "10+ Tools", icon: Code },
-    { label: "Location", value: "Assam, India", icon: Globe },
-    { label: "Status", value: "Freelance", icon: MapPin },
+  const labelX = useTransform(scrollYProgress, [0, 0.55], [-30, 0]);
+  const headingY = useTransform(scrollYProgress, [0.05, 0.6], [40, 0]);
+  const lineScale = useTransform(scrollYProgress, [0.15, 0.7], [0, 1]);
+  const cardY = useTransform(scrollYProgress, [0.1, 0.65], [60, 0]);
+  const bodyY = useTransform(scrollYProgress, [0.2, 0.75], [40, 0]);
+
+  const meta = [
+    { label: "Based in",   value: "Assam, India" },
+    { label: "Experience", value: "2+ Years" },
+    { label: "Stack",      value: "Full Stack" },
+    { label: "Status",     value: "Freelance · Open" },
+  ];
+
+  const personal = [
+    { label: "Education",  value: "Tezpur University" },
+    { label: "Semester",   value: "6th Sem, CSE" },
+    { label: "CGPA",       value: "7.28" },
+    { label: "Interests",  value: "Sports & Music" },
   ];
 
   return (
     <section
       ref={sectionRef}
       id="about"
-      className="relative min-h-screen bg-background overflow-hidden "
+      className="relative py-24 md:py-32 overflow-hidden bg-background"
     >
-      {/* Subtle diagonal stripes background */}
-      <div className="absolute inset-0 opacity-[0.02]">
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `repeating-linear-gradient(
-              45deg,
-              transparent,
-              transparent 35px,
-              rgba(217,78,40,0.3) 35px,
-              rgba(217,78,40,0.3) 70px
-            )`,
-          }}
-        />
-      </div>
-
-      {/* Grid overlay */}
-      <div className="absolute inset-0 opacity-[0.2]">
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `
-              linear-gradient(90deg, rgba(26,26,26,0.4) 1px, transparent 1px),
-              linear-gradient(0deg, rgba(26,26,26,0.4) 1px, transparent 1px)
-            `,
-            backgroundSize: "100px 100px",
-          }}
-        />
-      </div>
-
-      {/* Main container */}
       <motion.div
         style={{ y: sectionY, opacity }}
-        className="relative min-h-screen py-24 lg:py-32 px-32 flex items-center"
+        className="relative z-10 w-full max-w-6xl mx-auto px-6"
       >
-        <div className="relative z-10 max-w-7xl mx-auto w-full">
-          <div className="grid grid-cols-1 lg:grid-cols-[35%_65%] gap-12 lg:gap-16 items-center">
+        {/* ── Section header ── */}
+        <motion.p
+          style={{ x: labelX }}
+          className="font-helvetica font-bold text-xs uppercase tracking-[0.4em] text-foreground/40 mb-3"
+        >
+          Who I am
+        </motion.p>
 
-            {/* LEFT — Profile Card */}
-            <motion.div
-              style={{ x: profileX }}
-              className="flex justify-center lg:justify-start order-2 lg:order-1"
-            >
-              <Card className="group relative bg-background border-4 border-foreground rounded-none shadow-[8px_8px_0_0_rgba(26,26,26,1)] hover:shadow-[12px_12px_0_0_rgba(217,78,40,1)] transition-all duration-300 w-full max-w-md overflow-hidden">
-                {/* Subtle corner accent */}
-                <div className="absolute top-0 right-0 w-16 h-16 bg-accent-orange opacity-10 clip-triangle" />
-                
-                <CardHeader className="items-center text-center gap-6 pt-10 pb-10 relative">
-                  {/* Circular Avatar */}
-                  <div className="relative">
-                    {/* Subtle glow behind image */}
-                    <div className="absolute -inset-2 bg-accent-orange blur-xl opacity-0 group-hover:opacity-20 transition-opacity duration-500" />
-                    
-                    <div className="relative w-44 h-44 rounded-full border-4 border-foreground overflow-hidden bg-background shadow-[3px_3px_0_0_rgba(26,26,26,1)]">
-                      <img
-                        src="/images/profile.png"
-                        alt="Ruknabh Bhattacharyya"
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  </div>
+        <div className="flex items-end gap-6 flex-wrap mb-14 md:mb-20">
+          <motion.h2
+            style={{ y: headingY }}
+            className="font-garamond text-6xl md:text-7xl tracking-tight leading-none"
+          >
+            About Me
+          </motion.h2>
 
-                  <CardTitle className="font-helvetica font-black text-3xl text-foreground tracking-tight">
-                    Ruknabh Bhattacharyya
-                  </CardTitle>
-
-                  <p className="text-base text-foreground/70 font-helvetica font-bold uppercase tracking-wider">
-                    Full Stack Developer
-                  </p>
-
-                  <div className="flex items-center gap-2 text-sm text-accent-orange font-helvetica font-bold">
-                    <MapPin className="w-4 h-4" />
-                    Assam, India
-                  </div>
-
-                  {/* Neo-brutalist divider */}
-                  <div className="w-20 h-1 bg-foreground shadow-[2px_2px_0_0_rgba(217,78,40,1)]" />
-                </CardHeader>
-              </Card>
-            </motion.div>
-
-            {/* RIGHT — About Content */}
-            <div className="space-y-10 order-1 lg:order-2">
-              
-              {/* Heading */}
-              <motion.div style={{ x: headingX }}>
-                <h2 className="font-helvetica font-black text-4xl lg:text-7xl text-foreground tracking-tight leading-[0.9] mb-2">
-                  About Me
-                </h2>
-                <div className="w-24 h-2 bg-accent-orange shadow-[3px_3px_0_0_rgba(26,26,26,1)]" />
-              </motion.div>
-
-              {/* Text */}
-              <motion.div style={{ x: textX }}>
-                <p className="font-helvetica text-base lg:text-lg leading-relaxed text-foreground/75 max-w-2xl">
-                  I'm a full-stack developer focused on building modern,
-                  performance-driven web experiences with clean design
-                  and solid engineering. Over the past two years, I've
-                  worked across frontend and backend systems—shipping
-                  real products, collaborating with teams, and constantly
-                  refining how code and design work together.
-                </p>
-              </motion.div>
-
-              {/* Stats Grid - Smaller cards */}
-              <motion.div
-                style={{ x: statsX }}
-                className="grid grid-cols-2 gap-3"
-              >
-                {stats.map((stat, i) => {
-                  const Icon = stat.icon;
-                  return (
-                    <Card
-                      key={i}
-                      className="group relative bg-background border-3 border-foreground rounded-none shadow-[4px_4px_0_0_rgba(26,26,26,1)] hover:shadow-[6px_6px_0_0_rgba(217,78,40,1)] hover:border-accent-orange transition-all duration-300 cursor-pointer overflow-hidden"
-                    >
-                      {/* Corner accent on hover */}
-                      <div className="absolute top-0 left-0 w-0 h-0 border-t-16 border-t-accent-orange border-r-16 border-r-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                      
-                      <CardContent className="relative p-4">
-                        <Icon className="w-5 h-5 text-accent-orange mb-2 transition-transform group-hover:scale-110 duration-300" />
-                        <div className="font-helvetica font-black text-xl text-foreground mb-1">
-                          {stat.value}
-                        </div>
-                        <div className="text-[10px] uppercase tracking-widest text-foreground/60 font-helvetica font-bold">
-                          {stat.label}
-                        </div>
-                      </CardContent>
-                    </Card>
-                  );
-                })}
-              </motion.div>
-            </div>
-
-          </div>
+          <motion.div
+            style={{ scaleX: lineScale, originX: 0 }}
+            className="flex-1 min-w-15 h-1.5 bg-accent-orange mb-2"
+          />
         </div>
 
-        {/* Decorative accent line */}
-        <motion.div
-          style={{ opacity }}
-          className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
-        >
-          <div className="w-1 h-16 bg-accent-orange shadow-[2px_0_0_0_rgba(26,26,26,1)]" />
-          <div className="w-3 h-3 bg-foreground rotate-45 shadow-[2px_2px_0_0_rgba(217,78,40,1)]" />
-        </motion.div>
+        {/* ── Main content grid ── */}
+        <div className="grid grid-cols-1 lg:grid-cols-[45%_1fr] gap-10 lg:gap-14 items-start">
+
+          {/* LEFT — Profile card (shorter, wider) */}
+          <motion.div style={{ y: cardY }}>
+            <div className="relative border-4 border-foreground bg-background shadow-[8px_8px_0_0_rgba(26,26,26,1)]">
+              <div className="h-1.5 w-full bg-accent-orange" />
+
+              <div className="flex flex-col items-center gap-5 px-10 py-8">
+
+                {/* Avatar — smaller */}
+                <div
+                  className="w-40 h-40 rounded-full overflow-hidden shrink-0"
+                  style={{ boxShadow: "5px 5px 0px 0px rgba(26,26,26,1)" }}
+                >
+                  <img
+                    src="/images/profile.png"
+                    alt="Ruknabh Bhattacharyya"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+
+                {/* Name + title */}
+                <div className="text-center">
+                  <h3 className="font-helvetica font-black text-2xl uppercase tracking-tight text-foreground leading-tight">
+                    Ruknabh Bhattacharyya
+                  </h3>
+                  <p className="font-helvetica font-bold text-[10px] uppercase tracking-[0.3em] text-accent-orange mt-2">
+                    Full Stack Developer
+                  </p>
+                </div>
+
+                {/* Divider */}
+                <div className="w-full h-px bg-foreground/12" />
+
+                {/* Professional meta */}
+                <dl className="w-full space-y-3">
+                  {meta.map(({ label, value }) => (
+                    <div key={label} className="flex items-baseline justify-between gap-4">
+                      <dt className="font-helvetica font-bold text-[9px] uppercase tracking-[0.3em] text-foreground/35 shrink-0">
+                        {label}
+                      </dt>
+                      <dd className="font-helvetica font-black text-[11px] uppercase tracking-wider text-foreground text-right">
+                        {value}
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
+
+                {/* Divider */}
+                <div className="w-full h-px bg-foreground/12" />
+
+                {/* Location */}
+                <div className="flex items-center gap-2 font-helvetica font-black text-[9px] uppercase tracking-widest text-foreground/40">
+                  <MapPin className="w-3 h-3 text-accent-orange shrink-0" />
+                  Assam, India
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* RIGHT — Copy + personal details */}
+          <motion.div
+            style={{ y: bodyY }}
+            className="flex flex-col justify-start gap-8 lg:pt-2"
+          >
+            {/* Pull-quote */}
+            <p className="font-garamond text-3xl md:text-4xl lg:text-[2.6rem] leading-tight text-foreground tracking-tight">
+              I build things for the web — fast, clean, and with an eye for design.
+            </p>
+
+            {/* Accent divider */}
+            <div className="flex items-center gap-4">
+              <div className="w-8 h-0.75 bg-accent-orange" />
+              <div className="flex-1 h-px bg-foreground/10" />
+            </div>
+
+            {/* Body */}
+            <p className="font-helvetica font-bold text-sm md:text-base leading-relaxed text-foreground/60 max-w-xl">
+              Over the past two years I've worked across the full stack — shipping production
+              systems, collaborating with clients, and constantly refining how code and design
+              work together.
+            </p>
+
+            {/* Personal details — plain key-value, same style as card meta */}
+            <dl className="space-y-3.5">
+              {personal.map(({ label, value }) => (
+                <div key={label} className="flex items-baseline gap-6">
+                  <dt className="font-helvetica font-bold text-[9px] uppercase tracking-[0.3em] text-foreground/35 w-24 shrink-0">
+                    {label}
+                  </dt>
+                  <dd className="font-helvetica font-black text-[11px] uppercase tracking-wider text-foreground">
+                    {value}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </motion.div>
+
+        </div>
+      </motion.div>
+
+      {/* Bottom accent */}
+      <motion.div
+        style={{ opacity }}
+        className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+      >
+        <div className="w-px h-12 bg-foreground/15" />
+        <div className="w-2.5 h-2.5 rotate-45 bg-accent-orange border-2 border-foreground" />
       </motion.div>
     </section>
   );

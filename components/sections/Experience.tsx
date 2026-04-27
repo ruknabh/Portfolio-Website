@@ -169,7 +169,7 @@ export default function Experience() {
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
               style={{ originX: 0 }}
-              className="flex-1 min-w-[60px] h-1.5 bg-accent-orange mb-2"
+              className="flex-1 min-w-15.5 bg-accent-orange mb-2"
             />
           </div>
 
@@ -197,7 +197,7 @@ export default function Experience() {
                   <div className="flex flex-col md:flex-row md:items-start gap-6 md:gap-10 mb-8">
 
                     {/* Ghost number */}
-                    <span className="font-helvetica font-black text-[5rem] leading-none text-foreground/8 select-none flex-shrink-0 hidden md:block -mt-2">
+                    <span className="font-helvetica font-black text-[5rem] leading-none text-foreground/8 select-none shrink-0 hidden md:block -mt-2">
                       {exp.number}
                     </span>
 
@@ -212,7 +212,7 @@ export default function Experience() {
                     </div>
 
                     {/* Period + type */}
-                    <div className="flex flex-row md:flex-col items-start md:items-end gap-2 flex-shrink-0">
+                    <div className="flex flex-row md:flex-col items-start md:items-end gap-2 shrink-0">
                       <span className="font-helvetica font-black text-[10px] uppercase tracking-wider px-3 py-2 border-4 border-foreground text-foreground shadow-[3px_3px_0_0] shadow-foreground/20">
                         {exp.period}
                       </span>
@@ -240,7 +240,7 @@ export default function Experience() {
                           className="flex items-start gap-4"
                         >
                           {/* Square bullet */}
-                          <span className="mt-[7px] flex-shrink-0 w-2 h-2 bg-accent-orange" />
+                          <span className="mt-1.75 shrink-0 w-2 h-2 bg-accent-orange" />
                           <p className="font-helvetica font-bold text-sm leading-relaxed text-foreground/65">
                             {point}
                           </p>

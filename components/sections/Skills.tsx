@@ -34,7 +34,6 @@ const tooling = [
   { name: "Figma",   icon: "https://cdn.simpleicons.org/figma/1A1A1A" },
   { name: "Vercel",  icon: "https://cdn.simpleicons.org/vercel/1A1A1A" },
   { name: "Linux",   icon: "https://cdn.simpleicons.org/linux/1A1A1A" },
-  { name: "VS Code", icon: "https://cdn.simpleicons.org/visualstudiocode/1A1A1A" },
   { name: "GitHub",  icon: "https://cdn.simpleicons.org/github/1A1A1A" },
 ];
 
