@@ -1,11 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
-
-/* ─── Tech data ──────────────────────────────────────────────────────────────
-   cdn.simpleicons.org returns a clean coloured SVG for each slug.
-   We pass the hex colour as the last path segment.
-   ─────────────────────────────────────────────────────────────────────────── */
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
 
 const frontend = [
   { name: "React",          icon: "https://cdn.simpleicons.org/react/1A1A1A" },
@@ -39,75 +35,71 @@ const tooling = [
 
 type Tech = { name: string; icon: string };
 
-/* ─── Single circular chip ───────────────────────────────────────────────── */
+/* ─── Single chip ────────────────────────────────────────────────────────── */
 function TechChip({ tech }: { tech: Tech }) {
   return (
-    <div className="flex flex-col items-center gap-3 mx-6 shrink-0 group cursor-default select-none">
+    <div className="flex flex-col items-center gap-3.5 mx-8 shrink-0 group cursor-default select-none">
       <div
         className="
-          w-18 h-18
+          w-24 h-24
           rounded-full
           border-4 border-foreground
           bg-background
           shadow-[4px_4px_0_0] shadow-foreground
           flex items-center justify-center
-          p-3.5
+          p-4
           transition-all duration-300
           group-hover:shadow-accent-orange
-          group-hover:-translate-y-1.5
+          group-hover:-translate-y-2
         "
       >
         <img
           src={tech.icon}
           alt={tech.name}
-          width={40}
-          height={40}
+          width={52}
+          height={52}
           className="w-full h-full object-contain"
           loading="lazy"
           draggable={false}
         />
       </div>
-      <span className="font-helvetica text-[9px] uppercase tracking-widest font-bold text-foreground/40 group-hover:text-foreground transition-colors duration-300">
+      <span className="font-helvetica text-[10px] uppercase tracking-widest font-bold text-foreground/40 group-hover:text-foreground transition-colors duration-300">
         {tech.name}
       </span>
     </div>
   );
 }
 
-/* ─── Infinite marquee row ───────────────────────────────────────────────── */
+/* ─── Scroll-driven marquee row ──────────────────────────────────────────── */
 function MarqueeRow({
   techs,
   direction,
-  duration = 40,
+  scrollYProgress,
 }: {
   techs: Tech[];
   direction: "left" | "right";
-  duration?: number;
+  scrollYProgress: ReturnType<typeof useScroll>["scrollYProgress"];
 }) {
-  // Triple the array so there is always content visible during the loop
+  // Each row travels 33.333% of its total width (one full copy) across the scroll range.
+  // direction="right" → starts at -33.333% and moves to 0% as you scroll down.
+  // direction="left"  → starts at 0% and moves to -33.333% as you scroll down.
+  const x = useTransform(
+    scrollYProgress,
+    [0, 1],
+    direction === "right" ? ["-33.333%", "0%"] : ["0%", "-33.333%"]
+  );
+
   const items = [...techs, ...techs, ...techs];
 
   return (
-    <div className="relative w-full overflow-hidden py-3">
+    <div className="relative w-full overflow-hidden py-4">
       {/* Edge fades */}
-      <div className="pointer-events-none absolute inset-y-0 left-0 w-28 z-10 bg-linear-to-r from-background to-transparent" />
-      <div className="pointer-events-none absolute inset-y-0 right-0 w-28 z-10 bg-linear-to-l from-background to-transparent" />
+      <div className="pointer-events-none absolute inset-y-0 left-0 w-32 z-10 bg-linear-to-r from-background to-transparent" />
+      <div className="pointer-events-none absolute inset-y-0 right-0 w-32 z-10 bg-linear-to-l from-background to-transparent" />
 
-      {/* Marquee track */}
       <motion.div
         className="flex items-end"
-        style={{ width: "max-content" }}
-        animate={
-          direction === "left"
-            ? { x: ["0%", "-33.333%"] }
-            : { x: ["-33.333%", "0%"] }
-        }
-        transition={{
-          repeat: Infinity,
-          repeatType: "loop",
-          ease: "linear",
-          duration,
-        }}
+        style={{ width: "max-content", x }}
       >
         {items.map((tech, i) => (
           <TechChip key={`${tech.name}-${i}`} tech={tech} />
@@ -120,11 +112,11 @@ function MarqueeRow({
 /* ─── Row label ──────────────────────────────────────────────────────────── */
 function RowLabel({ number, label }: { number: string; label: string }) {
   return (
-    <div className="flex items-center gap-4 px-6 max-w-6xl mx-auto mb-3">
-      <span className="font-helvetica text-[9px] uppercase tracking-[0.4em] font-bold text-foreground/25">
+    <div className="flex items-center gap-5 px-6 max-w-6xl mx-auto mb-4">
+      <span className="font-helvetica text-[11px] uppercase tracking-[0.4em] font-bold text-foreground/25">
         {number}
       </span>
-      <span className="font-helvetica text-[10px] uppercase tracking-[0.25em] font-bold text-foreground/40">
+      <span className="font-helvetica text-sm uppercase tracking-[0.25em] font-black text-foreground/50">
         {label}
       </span>
       <div className="flex-1 h-px bg-foreground/10" />
@@ -134,8 +126,18 @@ function RowLabel({ number, label }: { number: string; label: string }) {
 
 /* ─── Skills section ─────────────────────────────────────────────────────── */
 export default function Skills() {
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  // Track scroll progress across the entire section.
+  // "start end" = when section top enters bottom of viewport (progress = 0)
+  // "end start" = when section bottom leaves top of viewport (progress = 1)
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"],
+  });
+
   return (
-    <section id="skills" className="py-24 md:py-32 overflow-hidden">
+    <section ref={sectionRef} id="skills" className="py-24 md:py-32 overflow-hidden">
       {/* Header */}
       <div className="max-w-6xl mx-auto px-6 mb-16 md:mb-20">
         <motion.p
@@ -159,7 +161,6 @@ export default function Skills() {
             Skills
           </motion.h2>
 
-          {/* Accent line */}
           <motion.div
             initial={{ scaleX: 0 }}
             whileInView={{ scaleX: 1 }}
@@ -171,8 +172,8 @@ export default function Skills() {
         </div>
       </div>
 
-      {/* Three marquee rows */}
-      <div className="flex flex-col gap-12">
+      {/* Three scroll-driven rows */}
+      <div className="flex flex-col gap-14">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -180,7 +181,7 @@ export default function Skills() {
           transition={{ duration: 0.65, delay: 0 }}
         >
           <RowLabel number="01" label="Frontend" />
-          <MarqueeRow techs={frontend} direction="left" duration={42} />
+          <MarqueeRow techs={frontend} direction="right" scrollYProgress={scrollYProgress} />
         </motion.div>
 
         <motion.div
@@ -190,7 +191,7 @@ export default function Skills() {
           transition={{ duration: 0.65, delay: 0.1 }}
         >
           <RowLabel number="02" label="Backend" />
-          <MarqueeRow techs={backend} direction="right" duration={48} />
+          <MarqueeRow techs={backend} direction="left" scrollYProgress={scrollYProgress} />
         </motion.div>
 
         <motion.div
@@ -200,7 +201,7 @@ export default function Skills() {
           transition={{ duration: 0.65, delay: 0.2 }}
         >
           <RowLabel number="03" label="Tooling" />
-          <MarqueeRow techs={tooling} direction="left" duration={38} />
+          <MarqueeRow techs={tooling} direction="right" scrollYProgress={scrollYProgress} />
         </motion.div>
       </div>
     </section>

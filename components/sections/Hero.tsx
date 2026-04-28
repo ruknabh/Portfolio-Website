@@ -1,204 +1,164 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useEffect, useRef } from "react";
+import { motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
-import { Button } from "../ui/button";
 import Navigation from "../Navigation";
 import PlanetModel from "../Planetmodel";
 
-
-/* ── 3-line terminal sequences ── */
-const terminalSequences = [
-  [
-    { prefix: "$",  color: "text-accent-orange", text: "npm install ruknabh-portfolio" },
-    { prefix: "›",  color: "text-white/50",       text: "Resolving 6 packages..." },
-    { prefix: "✓",  color: "text-accent-green",   text: "installed in 1.2s" },
-  ],
-  [
-    { prefix: "$",  color: "text-accent-orange", text: "git log --oneline -1" },
-    { prefix: "›",  color: "text-white/40",       text: "a3f92bc feat: 3D helmet + parallax" },
-    { prefix: "›",  color: "text-white/30",       text: "on branch main — up to date" },
-  ],
-  [
-    { prefix: "$",  color: "text-accent-orange", text: "npm run dev" },
-    { prefix: "✓",  color: "text-accent-green",   text: "compiled in 842ms" },
-    { prefix: "›",  color: "text-accent-green",   text: "ready → http://localhost:3000" },
-  ],
-];
-
-export default function Hero() {
-  const [currentTextIndex, setCurrentTextIndex] = useState(0);
-  const [seqIndex, setSeqIndex] = useState(0);
-  const [visibleCount, setVisibleCount] = useState(1);
+/* ─── Floating particle / star field ───────────────────────────────────── */
+function StarField() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const mouse = useRef({ x: 0, y: 0 });
-  const smoothMouse = useRef({ x: 0, y: 0 });
 
-  /* Terminal: reveal one line every 1.8s, pause 3.5s, then next sequence */
-  useEffect(() => {
-    const seq = terminalSequences[seqIndex];
-    if (visibleCount < seq.length) {
-      const id = setTimeout(() => setVisibleCount((c) => c + 1), 1800);
-      return () => clearTimeout(id);
-    } else {
-      const id = setTimeout(() => {
-        setSeqIndex((s) => (s + 1) % terminalSequences.length);
-        setVisibleCount(1);
-      }, 3500);
-      return () => clearTimeout(id);
-    }
-  }, [visibleCount, seqIndex]);
-
-  /* Mouse tracking */
-  useEffect(() => {
-    const onMove = (e: MouseEvent) => { mouse.current = { x: e.clientX, y: e.clientY }; };
-    window.addEventListener("mousemove", onMove);
-    return () => window.removeEventListener("mousemove", onMove);
-  }, []);
-
-  /* Dot grid */
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    const resize = () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; };
+    let W = 0, H = 0;
+    const resize = () => {
+      W = canvas.width = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+    };
     resize();
     window.addEventListener("resize", resize);
 
-    const gridSize = 44;
-    const influenceRadius = 200;
-    const maxPull = 16;
+    type Star = { x: number; y: number; r: number; a: number; da: number; dx: number; dy: number };
+    const stars: Star[] = Array.from({ length: 240 }, () => ({
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      r: Math.random() * 1.1 + 0.15,
+      a: Math.random() * 0.7 + 0.05,
+      da: (Math.random() - 0.5) * 0.0028,
+      dx: (Math.random() - 0.5) * 0.055,
+      dy: (Math.random() - 0.5) * 0.055,
+    }));
 
-    const drawGrid = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      smoothMouse.current.x += (mouse.current.x - smoothMouse.current.x) * 0.1;
-      smoothMouse.current.y += (mouse.current.y - smoothMouse.current.y) * 0.1;
-      const mx = smoothMouse.current.x;
-      const my = smoothMouse.current.y;
-
-      const falloff = (d: number) => {
-        if (d > influenceRadius) return 0;
-        const t = 1 - d / influenceRadius;
-        return t * t * t;
-      };
-
-      for (let x = 0; x < canvas.width + gridSize; x += gridSize) {
-        for (let y = 0; y < canvas.height + gridSize; y += gridSize) {
-          const dx = mx - x;
-          const dy = my - y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          const s = falloff(dist);
-
-          const px = x + s * maxPull * (dx / (dist || 1));
-          const py = y + s * maxPull * (dy / (dist || 1));
-
-          const alpha = 0.18 + s * 0.55;
-          const radius = 1.4 + s * 2.4;
-
-          ctx.beginPath();
-          ctx.arc(px, py, radius, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(26,26,26,${alpha})`;
-          ctx.fill();
-        }
+    let raf: number;
+    const draw = () => {
+      ctx.clearRect(0, 0, W, H);
+      for (const s of stars) {
+        s.a = Math.max(0.04, Math.min(0.82, s.a + s.da));
+        if (s.a <= 0.04 || s.a >= 0.82) s.da *= -1;
+        s.x = (s.x + s.dx + W) % W;
+        s.y = (s.y + s.dy + H) % H;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255,255,255,${s.a.toFixed(3)})`;
+        ctx.fill();
       }
+      raf = requestAnimationFrame(draw);
     };
+    draw();
 
-    let rafId: number;
-    const loop = () => { drawGrid(); rafId = requestAnimationFrame(loop); };
-    loop();
-    return () => { cancelAnimationFrame(rafId); window.removeEventListener("resize", resize); };
+    return () => { cancelAnimationFrame(raf); window.removeEventListener("resize", resize); };
   }, []);
 
+  return <canvas ref={canvasRef} className="absolute inset-0 z-0 pointer-events-none" />;
+}
+
+/* ─── Hero ──────────────────────────────────────────────────────────────── */
+export default function Hero() {
   const scrollToProjects = () =>
     document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" });
-
-  const displayedLines = terminalSequences[seqIndex].slice(0, visibleCount);
 
   return (
     <section
       id="hero"
-      className="relative min-h-screen overflow-hidden flex items-center bg-background"
+      className="relative min-h-screen flex items-center overflow-hidden"
+      style={{ background: "#07070f" }}
     >
       <Navigation />
 
-      {/* Grain overlay */}
+      {/* Deep-space ambient glow */}
+      <div
+        className="absolute inset-0 z-0 pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(ellipse 90% 70% at 78% 52%, rgba(140,45,8,0.16) 0%, transparent 65%), " +
+            "radial-gradient(ellipse 55% 90% at 100% 50%, rgba(200,65,10,0.09) 0%, transparent 55%)",
+        }}
+      />
+
+      {/* Particle stars */}
+      <StarField />
+
+      {/* Film-grain texture */}
       <div
         className="absolute inset-0 pointer-events-none z-0"
         style={{
-          opacity: 0.10,
+          opacity: 0.05,
           backgroundImage:
             "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
           backgroundSize: "200px 200px",
         }}
       />
 
-      <canvas ref={canvasRef} className="absolute inset-0 z-0" style={{ pointerEvents: "none" }} />
-
-      {/*
-        ── PLANET ARC ──────────────────────────────────────────────────────
-        The container is a large square (110vh × 110vh) whose CENTER sits
-        exactly at the right edge of the viewport (right: 0).
-        translateX(+70%) pushes it so that 70% of the square is off-screen
-        to the right, leaving only 30% (the left arc of the planet) visible.
-        The planet itself is centered inside the canvas via the 3-D camera,
-        so what peeks in from the right is a clean arc.
-
-        IMPORTANT: pointer-events must remain "none" on this wrapper so the
-        dot-grid and page scrolling aren't blocked, but the Canvas inside
-        re-enables pointer-events so OrbitControls still work for rotation.
-      */}
+      {/* ── Planet arc ── */}
       <div
         className="absolute z-5"
         style={{
-          width:  "130vh",                          //increase width of the div section for the planet 
-          height: "140vh",
-          top:    "50%",
-          right:  0,
-          transform: "translate(50%, -50%)",       //move left or right by adjusting the traslate +%
+          width: "140vh",
+          height: "150vh",
+
+          top: "50%",
+          right: 0,
+
+          // 🔧 POSITION CONTROL
+          transform: "translate(45%, -50%)",
+
           pointerEvents: "none",
+
+          // ✅ smoother, more natural fade
+          WebkitMaskImage:
+            "radial-gradient(ellipse 80% 70% at 70% 50%, black 55%, transparent 100%)",
+          maskImage:
+            "radial-gradient(ellipse 80% 70% at 70% 50%, black 55%, transparent 100%)",
+
+          // very subtle edge smoothing
+          filter: "blur(0.15px)",
         }}
       >
-        {/* Re-enable pointer events just for the 3-D canvas */}
-        <div style={{ width: "100%", height: "100%", pointerEvents: "auto" }}>
+        <div style={{ width: "100%", height: "100%", pointerEvents: "none" }}>
           <PlanetModel />
         </div>
       </div>
 
       {/* ── Main content ── */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-8 pt-20 pb-20">
-        {/* Single column — planet is decorative, not in grid flow */}
-        <div className="max-w-[55%]">
-          <div className="flex flex-col gap-10">
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-8 pt-28 pb-40">
+        <div className="max-w-[54%]">
+          <div className="flex flex-col gap-9">
 
-            {/* Eyebrow */}
+            {/* Eyebrow label */}
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.3, duration: 0.5 }}
+              transition={{ delay: 0.3, duration: 0.55 }}
               className="flex items-center gap-3"
             >
-              <span className="w-8 h-0.5 bg-accent-orange" />
-              <span className="font-helvetica text-sm text-foreground/45 tracking-wide">
+              <span className="w-8 h-px bg-accent-orange" style={{ height: "2px" }} />
+              <span
+                className="font-helvetica text-[10px] uppercase tracking-[0.32em] font-bold"
+                style={{ color: "rgba(255,255,255,0.62)" }}
+              >
                 Full Stack Developer · Freelance
               </span>
             </motion.div>
 
             {/* Name */}
             <div>
-              <h1 className="font-helvetica font-black leading-[0.85] tracking-tight">
+              <h1 className="font-helvetica font-black leading-[0.88] tracking-tight">
                 {"Hi! I'm".split("").map((letter, i) => (
                   <motion.span
-                    key={`greeting-${i}`}
-                    initial={{ y: 100, opacity: 0 }}
+                    key={`g-${i}`}
+                    initial={{ y: 80, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
-                    transition={{ duration: 0.8, delay: i * 0.05, ease: [0.6, 0.01, 0.05, 0.95] }}
-                    className="inline-block text-foreground"
+                    transition={{ duration: 0.75, delay: i * 0.045, ease: [0.6, 0.01, 0.05, 0.95] }}
+                    className="inline-block"
                     style={{
-                      fontSize: "clamp(2.2rem,5.5vw,4rem)",
-                      textShadow: "3px 3px 0px rgba(217,78,40,0.4)",
+                      fontSize: "clamp(1.9rem, 4.8vw, 3.4rem)",
+                      color: "rgba(255,255,255,0.7)",
                     }}
                   >
                     {letter === " " ? "\u00A0" : letter}
@@ -206,17 +166,18 @@ export default function Hero() {
                 ))}
               </h1>
 
-              <h1 className="font-helvetica font-black leading-[0.85] tracking-tight">
+              <h1 className="font-helvetica font-black leading-[0.88] tracking-tight">
                 {"Ruknabh".split("").map((letter, i) => (
                   <motion.span
-                    key={i}
+                    key={`n-${i}`}
                     initial={{ y: 100, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
-                    transition={{ duration: 0.8, delay: 0.4 + i * 0.08, ease: [0.6, 0.01, 0.05, 0.95] }}
-                    className="inline-block text-foreground"
+                    transition={{ duration: 0.85, delay: 0.32 + i * 0.075, ease: [0.6, 0.01, 0.05, 0.95] }}
+                    className="inline-block"
                     style={{
-                      fontSize: "clamp(5rem,13vw,9.5rem)",
-                      textShadow: "4px 4px 0px rgba(217,78,40,0.45)",
+                      fontSize: "clamp(4.2rem, 11.5vw, 8.8rem)",
+                      color: "#ffffff",
+                      textShadow: "4px 4px 0px rgba(217,78,40,0.52)",
                     }}
                   >
                     {letter}
@@ -225,103 +186,173 @@ export default function Hero() {
               </h1>
             </div>
 
-            {/* ── Terminal ── */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
+            {/* Short descriptor */}
+            <motion.p
+              initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.8, duration: 0.7, ease: [0.6, 0.01, 0.05, 0.95] }}
-              className="max-w-sm"
+              transition={{ delay: 1.05, duration: 0.6, ease: [0.6, 0.01, 0.05, 0.95] }}
+              className="font-helvetica font-bold leading-relaxed max-w-[22rem]"
+              style={{
+                fontSize: "clamp(0.78rem, 1.1vw, 0.92rem)",
+                color: "rgba(255,255,255,0.55)",
+                letterSpacing: "0.015em",
+              }}
             >
-              <div
-                className="border-4 border-foreground font-mono text-xs overflow-hidden"
+              I build things for the web — fast, clean,
+              <br />
+              and with a sharp eye for design.
+            </motion.p>
+
+            {/* CTAs */}
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1.28, duration: 0.6, ease: [0.6, 0.01, 0.05, 0.95] }}
+              className="flex items-center gap-5"
+            >
+              {/* 1. Hire Me — no hover animation, with bouncing arrow */}
+              <button
+                onClick={() =>
+                  document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })
+                }
+                className="font-helvetica font-black uppercase tracking-wider text-sm px-8 h-14 flex items-center gap-3"
                 style={{
-                  background: "rgb(26,26,26)",
-                  boxShadow: "5px 5px 0 0 rgb(26,26,26)",
+                  background: "#D94E28",
+                  border: "4px solid #D94E28",
+                  color: "#fff",
+
                 }}
-              >
-                <div className="flex items-center gap-2 px-4 py-2.5 border-b border-white/10">
-                  <span className="w-2.5 h-2.5 rounded-full bg-accent-orange" />
-                  <span className="w-2.5 h-2.5 rounded-full bg-white/15" />
-                  <span className="w-2.5 h-2.5 rounded-full bg-white/10" />
-                  <span className="ml-3 font-garamond italic text-[10px] text-white/25">
-                    ruknabh ~ bash
-                  </span>
-                </div>
-
-                <div className="px-4 py-3" style={{ height: "112px" }}>
-                  <div className="space-y-1.5">
-                    <AnimatePresence initial={false}>
-                      {displayedLines.map((line, i) => (
-                        <motion.div
-                          key={`${seqIndex}-${i}`}
-                          initial={{ opacity: 0, x: -8 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ duration: 0.45, ease: "easeOut" }}
-                          className="flex items-start gap-2 leading-relaxed"
-                        >
-                          <span className={`shrink-0 font-bold ${line.color}`}>{line.prefix}</span>
-                          <span className="text-white/65">{line.text}</span>
-                        </motion.div>
-                      ))}
-                    </AnimatePresence>
-                    <div className="flex items-center gap-2">
-                      <span className="text-accent-orange font-bold">$</span>
-                      <motion.span
-                        animate={{ opacity: [1, 0, 1] }}
-                        transition={{ duration: 1.1, repeat: Infinity }}
-                        className="inline-block w-1.5 bg-accent-orange"
-                        style={{ height: "0.85em" }}
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Hire Me */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.4, duration: 0.6, ease: [0.6, 0.01, 0.05, 0.95] }}
-            >
-              <Button
-                variant="neo"
-                size="lg"
-                onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
               >
                 Hire Me
                 <motion.span
-                  className="inline-block ml-3"
-                  animate={{ x: [0, 4, 0] }}
-                  transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                  className="inline-block"
+                  animate={{ x: [0, 5, 0] }}
+                  transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
                 >
                   →
                 </motion.span>
-              </Button>
+              </button>
+
+              {/* 2. GitHub — solid white, border matches Hire Me weight */}
+              <a
+                href="https://github.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-12 h-12 flex items-center justify-center transition-all duration-200"
+                style={{
+                  background: "#ffffff",
+                  border: "4px solid #ffffff",
+                  color: "#07070f",
+
+                }}
+                onMouseEnter={(e) => {
+                  const el = e.currentTarget as HTMLElement;
+                  el.style.background = "#D94E28";
+                  el.style.borderColor = "#D94E28";
+                  el.style.color = "#ffffff";
+                }}
+                onMouseLeave={(e) => {
+                  const el = e.currentTarget as HTMLElement;
+                  el.style.background = "#ffffff";
+                  el.style.borderColor = "#ffffff";
+                  el.style.color = "#07070f";
+                }}
+                aria-label="GitHub"
+              >
+                <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+                  <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
+                </svg>
+              </a>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1.52, duration: 0.55 }}
+              className="flex items-center gap-10 pt-1"
+            >
+              {[
+                { value: "2+", label: "Years exp." },
+                { value: "10+", label: "Projects" },
+                { value: "Open", label: "To Work" },
+              ].map(({ value, label }, i) => (
+                <div key={label} className="relative flex flex-col gap-1.5">
+                  {i > 0 && (
+                    <div
+                      className="absolute"
+                      style={{
+                        left: "-1.25rem",
+                        top: "50%",
+                        transform: "translateY(-50%)",
+                        width: "1px",
+                        height: "2rem",
+                        background: "rgba(255,255,255,0.15)",
+                      }}
+                    />
+                  )}
+                  <span
+                    className="font-helvetica font-black leading-none"
+                    style={{
+                      fontSize: "clamp(1.3rem, 2.5vw, 1.85rem)",
+                      color: i === 0 ? "#D94E28" : "rgba(255,255,255,0.92)",
+                    }}
+                  >
+                    {value}
+                  </span>
+                  <span
+                    className="font-helvetica font-bold text-[8px] uppercase tracking-[0.32em]"
+                    style={{ color: "rgba(255,255,255,0.5)" }}
+                  >
+                    {label}
+                  </span>
+                </div>
+              ))}
             </motion.div>
 
           </div>
         </div>
       </div>
 
-      {/* Scroll CTA */}
+      {/* Scroll cue */}
       <motion.button
         onClick={scrollToProjects}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1.8, duration: 0.6 }}
-        className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-foreground group z-20"
+        transition={{ delay: 2, duration: 0.6 }}
+        className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-20 group"
       >
-        <span className="font-garamond italic text-sm text-foreground/50 tracking-wide">
+        <span
+          className="font-garamond italic text-sm tracking-wide"
+          style={{ color: "rgba(255,255,255,0.2)" }}
+        >
           scroll to explore
         </span>
         <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+          animate={{ y: [0, 7, 0] }}
+          transition={{ repeat: Infinity, duration: 2.2, ease: "easeInOut" }}
         >
-          <ChevronDown className="w-5 h-5 group-hover:text-accent-orange transition-colors duration-300" />
+          <ChevronDown
+            className="w-5 h-5 transition-colors duration-300 group-hover:text-accent-orange"
+            style={{ color: "rgba(255,255,255,0.2)" }}
+          />
         </motion.div>
       </motion.button>
+
+      {/* Bottom dissolve */}
+      <div
+        className="absolute bottom-0 left-0 right-0 pointer-events-none"
+        style={{
+          zIndex: 20,
+          height: "32vh",
+          background:
+            "linear-gradient(to bottom, " +
+            "transparent 0%, " +
+            "rgba(7,7,15,0.55) 30%, " +
+            "rgba(7,7,15,0.88) 55%, " +
+            "#07070f 80%, " +
+            "#07070f 100%)",
+        }}
+      />
     </section>
   );
 }

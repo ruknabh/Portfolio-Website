@@ -22,10 +22,13 @@ export default function Navigation() {
               >
                 <a
                   href={`#${item}`}
-                  className="relative group hover:text-accent-orange transition-colors duration-300 font-garamond  text-base md:text-xl tracking-wide capitalize text-foreground/70"
+                  className="relative group transition-colors duration-300 font-garamond text-base md:text-xl tracking-wide capitalize"
+                  style={{ color: "rgba(255,255,255,0.6)" }}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = "#D94E28")}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.6)")}
                 >
                   {item}
-                  <span className="absolute -bottom-1 left-0 w-0 h-px bg-accent-orange group-hover:w-full transition-all duration-300" />
+                  <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-accent-orange group-hover:w-full transition-all duration-300" />
                 </a>
               </motion.li>
             )

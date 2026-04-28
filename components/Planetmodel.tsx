@@ -2,7 +2,7 @@
 
 import { useRef, useMemo, useEffect } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { OrbitControls, useGLTF } from "@react-three/drei";
+import { useGLTF } from "@react-three/drei";
 import { EffectComposer, Bloom } from "@react-three/postprocessing";
 import * as THREE from "three";
 
@@ -14,34 +14,33 @@ function Planet() {
 
   const cloned = useMemo(() => scene.clone(true), [scene]);
 
-  // enhance emissive
+  // ── EMISSIVE CONTROL (🔥 main glow driver — keep this balanced)
   useEffect(() => {
     cloned.traverse((child: any) => {
       if (child.isMesh && child.material) {
         const mat = child.material as THREE.MeshStandardMaterial;
-        if (mat.emissive) mat.emissiveIntensity = 1.8;
+
+        // 🔧 PRIMARY GLOW CONTROL
+        if (mat.emissive) mat.emissiveIntensity = 1.25; 
+        // sweet spot: 1.0 → 1.4
+
         mat.needsUpdate = true;
       }
     });
   }, [cloned]);
 
-  // Pure Y-axis rotation around the planet's own centre
+  // ── ROTATION (slightly slower = less GPU pressure)
   useFrame((_, delta) => {
     if (!pivotRef.current) return;
-    pivotRef.current.rotation.y += delta * 0.12;
+
+    // 🔧 ROTATION SPEED
+    pivotRef.current.rotation.y += delta * 0.08;
   });
 
   return (
-    /*
-      Position the planet at world origin (0, 0, 0).
-      The camera is pulled back along Z so the planet fills the canvas.
-      The container div in Hero.tsx is then shifted 70% off-screen to the
-      right using CSS transform, so only the left ~30% arc is visible.
-      OrbitControls.target stays at (0, 0, 0) — the true planet centre —
-      so rotation always spins correctly around the visible arc.
-    */
     <group ref={pivotRef} position={[0, 0, 0]}>
-      <primitive object={cloned} scale={1.4} />                                          {/* Use to toggle the size of the planet*/}
+      {/* 🔧 PLANET SIZE */}
+      <primitive object={cloned} scale={1.4} />
     </group>
   );
 }
@@ -52,34 +51,56 @@ export default function PlanetModel() {
     <div className="w-full h-full">
       <Canvas
         camera={{ position: [0, 0.2, 5], fov: 38 }}
-        gl={{ antialias: true, alpha: true }}
-        dpr={[1, 2]}
+
+        // ✅ PERFORMANCE FIXES
+        dpr={1} // 🔥 HUGE performance win
+        gl={{ antialias: false, alpha: true }} // disable AA for performance
+        frameloop="always"
+
+        // ✅ fully transparent canvas (no visible box)
+        onCreated={({ gl }) => {
+          gl.setClearColor(0x000000, 0);
+        }}
       >
-        {/* lighting */}
-        <directionalLight position={[-4, 4, 4]} intensity={2.5} color="#ffd1a3" />
-        <directionalLight position={[2, -1, -2]} intensity={0.5} />
-        <ambientLight intensity={0.4} color="#fff2e6" />
-        <pointLight position={[1, -2, 2]} intensity={4} color="#ff6a2b" />
+        {/* ─── LIGHTING (balanced for glow + performance) ─── */}
+
+        {/* Main light */}
+        <directionalLight
+          position={[-3, 4, 4]}
+          intensity={2.2}
+          color="#ffd1a3"
+        />
+
+        {/* Rim glow light */}
+        <directionalLight
+          position={[3, -2, -3]}
+          intensity={1.2}
+          color="#ffb38a"
+        />
+
+        {/* Ambient fill */}
+        <ambientLight intensity={2.35} color="#fff2e6" />
+
+        {/* 🔥 Glow source (controlled, not extreme) */}
+        <pointLight
+          position={[1.5, -1.5, 2]}
+          intensity={5.5}   // 🔧 increase for more glow
+          distance={30}      // 🔧 spread radius
+          decay={2}
+          color="#ff6a2b"
+        />
 
         <Planet />
 
+        {/* ─── BLOOM (optimized glow) ─── */}
         <EffectComposer>
-          <Bloom intensity={0.8} luminanceThreshold={0.25} />
+          <Bloom
+            intensity={2.9}            // 🔥 glow strength (safe range)
+            luminanceThreshold={0.32}  // isolates lava areas
+            luminanceSmoothing={0.25}
+            // ❌ removed mipmapBlur (expensive)
+          />
         </EffectComposer>
-
-        {/*
-          target=[0,0,0] — matches the planet's world position.
-          Rotation will orbit correctly around the planet centre even though
-          only the left arc is visible on screen.
-        */}
-        <OrbitControls
-          enablePan={false}
-          enableZoom={false}
-          rotateSpeed={0.6}
-          enableDamping
-          dampingFactor={0.08}
-          target={[0, 0, 0]}
-        />
       </Canvas>
     </div>
   );
