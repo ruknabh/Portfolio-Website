@@ -38,7 +38,7 @@ const projects = [
       "A hand-crafted portfolio built around a brutalist editorial aesthetic — animated letter-by-letter hero type, a scroll-driven 3D lava planet rendered in WebGL, scroll-linked marquee skill rows, a parallax project panel, and a contact form — all wired together with scroll-reactive Framer Motion throughout.",
     tech: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Framer Motion", "Three.js", "React Three Fiber"],
     image: "/images/project-3.png",
-    tryIt: "#",
+    tryIt: "https://ruknabh-portfolio.vercel.app/",
     repo: "https://github.com/ruknabh/Portfolio-Website",
     showTryIt: true,
   },

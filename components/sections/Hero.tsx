@@ -125,20 +125,21 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* MOBILE planet — sits top-right as a background element */}
+      {/* MOBILE planet — centered on right side, overlaps text but dark bg keeps text readable */}
       <div
         className="absolute z-5 block md:hidden"
         style={{
-          width: "105vw",
-          height: "105vw",
-          top: "-10vw",
-          right: "-30vw",
+          width: "115vw",
+          height: "115vw",
+          top: "50%",
+          right: 0,
+          transform: "translate(30%, -50%)",
           pointerEvents: "none",
           WebkitMaskImage:
-            "radial-gradient(ellipse 75% 75% at 60% 40%, black 30%, transparent 85%)",
+            "radial-gradient(ellipse 70% 75% at 60% 50%, black 35%, transparent 80%)",
           maskImage:
-            "radial-gradient(ellipse 75% 75% at 60% 40%, black 30%, transparent 85%)",
-          opacity: 0.55,
+            "radial-gradient(ellipse 70% 75% at 60% 50%, black 35%, transparent 80%)",
+          opacity: 0.5,
         }}
       >
         <div style={{ width: "100%", height: "100%", pointerEvents: "none" }}>
@@ -147,8 +148,8 @@ export default function Hero() {
       </div>
 
       {/* ── Main content ── */}
-      <div className="relative z-10 w-full max-w-6xl mx-auto px-5 sm:px-6 pt-28 pb-40 sm:pt-28 sm:pb-40">
-        {/* On mobile: full width. On desktop: 54% */}
+      <div className="relative z-10 w-full max-w-6xl mx-auto px-5 sm:px-6 pt-24 pb-24 sm:pt-28 sm:pb-40">
+        {/* On mobile: full width but text stays left. On desktop: 54% */}
         <div className="w-full md:max-w-[54%]">
           <div className="flex flex-col gap-7 sm:gap-9">
 
@@ -215,7 +216,7 @@ export default function Hero() {
               transition={{ delay: 1.05, duration: 0.6, ease: [0.6, 0.01, 0.05, 0.95] }}
               className="font-helvetica font-bold leading-relaxed max-w-xs sm:max-w-sm md:max-w-88"
               style={{
-                fontSize: "clamp(0.68rem, 2.2vw, 0.75rem)",
+                fontSize: "clamp(0.72rem, 2.2vw, 0.75rem)",
                 color: "rgba(255,255,255,0.55)",
                 letterSpacing: "0.015em",
               }}
@@ -290,7 +291,7 @@ export default function Hero() {
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1.52, duration: 0.55 }}
-              className="flex items-center gap-7 sm:gap-10 pt-1"
+              className="flex items-center gap-6 sm:gap-10 pt-1"
             >
               {[
                 { value: "2+", label: "Years exp." },
@@ -302,11 +303,11 @@ export default function Hero() {
                     <div
                       className="absolute"
                       style={{
-                        left: "-0.875rem",
+                        left: "-0.75rem",
                         top: "50%",
                         transform: "translateY(-50%)",
                         width: "1px",
-                        height: "1.75rem",
+                        height: "1.6rem",
                         background: "rgba(255,255,255,0.15)",
                       }}
                     />
@@ -321,9 +322,9 @@ export default function Hero() {
                     {value}
                   </span>
                   <span
-                    className="font-helvetica font-bold uppercase tracking-[0.28em]"
+                    className="font-helvetica font-bold uppercase tracking-[0.25em]"
                     style={{
-                      fontSize: "clamp(6px, 1.6vw, 6.5px)",
+                      fontSize: "7px",
                       color: "rgba(255,255,255,0.5)",
                     }}
                   >
