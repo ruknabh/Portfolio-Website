@@ -39,7 +39,7 @@ const projects = [
     tech: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Framer Motion", "Three.js", "React Three Fiber"],
     image: "/images/project-3.png",
     tryIt: "#",
-    repo: "#",
+    repo: "https://github.com/ruknabh/Portfolio-Website",
     showTryIt: true,
   },
 ];
@@ -80,7 +80,7 @@ function ProjectCard({
         />
 
         {/* Subtle darkening at the bottom only */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-t from-black/50 to-transparent" />
 
         {/* Tag — always visible */}
         <span className="absolute top-3 left-3 font-helvetica font-black text-[8px] uppercase tracking-widest px-2.5 py-1 bg-accent-orange text-white leading-none">
@@ -111,7 +111,7 @@ function ProjectCard({
           </div>
 
           {/* Orange rule */}
-          <div className="w-8 h-[2px] bg-accent-orange" />
+          <div className="w-8 h-0.5 bg-accent-orange" />
 
           {/* Description — prominent, easy to read */}
           <p className="font-helvetica font-bold text-sm md:text-[0.92rem] leading-[1.85] text-white/72">
@@ -145,7 +145,7 @@ function ProjectCard({
                 border-4 border-white
                 font-helvetica font-black text-[9px] uppercase tracking-widest
                 shadow-[4px_4px_0_0_rgba(217,78,40,0.65)]
-                hover:shadow-none hover:translate-x-[4px] hover:translate-y-[4px]
+                hover:shadow-none hover:translate-x-1 hover:translate-y-1
                 transition-[box-shadow,transform] duration-150
               "
             >
@@ -159,7 +159,7 @@ function ProjectCard({
             target="_blank"
             rel="noopener noreferrer"
             aria-label="GitHub repository"
-            className="w-[40px] h-[40px] flex items-center justify-center border-2 border-white/15 text-white/35 hover:border-white/45 hover:text-white/65 transition-colors duration-150"
+            className="w-10 h-10 flex items-center justify-center border-2 border-white/15 text-white/35 hover:border-white/45 hover:text-white/65 transition-colors duration-150"
           >
             <Github className="w-3.5 h-3.5" />
           </a>
@@ -210,7 +210,7 @@ export default function Projects() {
             <h2 className="font-garamond text-6xl md:text-7xl tracking-tight leading-none text-white">
               Projects
             </h2>
-            <div className="flex-1 min-w-[3rem] h-1.5 bg-accent-orange mb-2" />
+            <div className="flex-1 min-w-12 h-1.5 bg-accent-orange mb-2" />
           </div>
 
           {/* Cards */}

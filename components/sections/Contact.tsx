@@ -346,7 +346,7 @@ export default function Contact() {
                           border-4 border-background
                           font-helvetica font-black text-xs uppercase tracking-widest
                           shadow-[6px_6px_0_0] shadow-foreground/30
-                          hover:translate-x-1.5 hover:translate-y-[6px] hover:shadow-none
+                          hover:translate-x-1.5 hover:translate-y-1.5 hover:shadow-none
                           transition-all duration-200
                         "
                       >

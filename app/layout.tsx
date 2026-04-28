@@ -1,12 +1,13 @@
 import "./globals.css";
+import type { Metadata } from "next";
+
 import {
   helvetica,
   garamond,
-  cormorant,
-  blacksword,
+  cormorant
 } from "./fonts/fonts";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Ruknabh Bhattacharyya | Full Stack Developer",
   description:
     "Full-stack developer specializing in modern web applications. Available for freelance projects.",
@@ -24,7 +25,6 @@ export default function RootLayout({
           helvetica.variable,
           garamond.variable,
           cormorant.variable,
-          blacksword.variable,
         ].join(" ")}
       >
         {children}
