@@ -19,7 +19,7 @@ const experiences = [
       "Followed clean architecture — separated controllers, services, and routes for maintainable, scalable codebase.",
     ],
     stack: ["React", "Node.js", "Express", "MySQL", "Recharts"],
-    certificate: "/certificates/iocl-certificate.jpg", // ← swap with actual path
+    certificate: "\\images\\certificates\\iocl.jpg", // ← swap with actual path
   },
   {
     number: "02",
@@ -33,7 +33,7 @@ const experiences = [
       "Implemented client-side routing, navigation architecture, and a reusable component library.",
     ],
     stack: ["React", "TypeScript", "Next.js"],
-    certificate: "/certificates/bael-certificate.jpg", // ← swap with actual path
+    certificate: "\\images\\certificates\\bael.png", // ← swap with actual path
   },
 ];
 

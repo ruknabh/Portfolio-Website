@@ -126,7 +126,7 @@ export default function Hero() {
       </div>
 
       {/* ── Main content ── */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-8 pt-28 pb-40">
+      <div className="relative z-10 w-full max-w-6xl mx-auto px-6 pt-28 pb-40">
         <div className="max-w-[54%]">
           <div className="flex flex-col gap-9">
 
@@ -139,7 +139,7 @@ export default function Hero() {
             >
               <span className="w-8 h-px bg-accent-orange" style={{ height: "2px" }} />
               <span
-                className="font-helvetica text-[10px] uppercase tracking-[0.32em] font-bold"
+                className="font-helvetica text-[8.5px] uppercase tracking-[0.32em] font-bold"
                 style={{ color: "rgba(255,255,255,0.62)" }}
               >
                 Full Stack Developer · Freelance
@@ -157,7 +157,7 @@ export default function Hero() {
                     transition={{ duration: 0.75, delay: i * 0.045, ease: [0.6, 0.01, 0.05, 0.95] }}
                     className="inline-block"
                     style={{
-                      fontSize: "clamp(1.9rem, 4.8vw, 3.4rem)",
+                      fontSize: "clamp(1.5rem, 3.8vw, 2.7rem)",
                       color: "rgba(255,255,255,0.7)",
                     }}
                   >
@@ -175,7 +175,7 @@ export default function Hero() {
                     transition={{ duration: 0.85, delay: 0.32 + i * 0.075, ease: [0.6, 0.01, 0.05, 0.95] }}
                     className="inline-block"
                     style={{
-                      fontSize: "clamp(4.2rem, 11.5vw, 8.8rem)",
+                      fontSize: "clamp(3.4rem, 9.2vw, 7rem)",
                       color: "#ffffff",
                       textShadow: "4px 4px 0px rgba(217,78,40,0.52)",
                     }}
@@ -193,7 +193,7 @@ export default function Hero() {
               transition={{ delay: 1.05, duration: 0.6, ease: [0.6, 0.01, 0.05, 0.95] }}
               className="font-helvetica font-bold leading-relaxed max-w-[22rem]"
               style={{
-                fontSize: "clamp(0.78rem, 1.1vw, 0.92rem)",
+                fontSize: "clamp(0.65rem, 0.88vw, 0.75rem)",
                 color: "rgba(255,255,255,0.55)",
                 letterSpacing: "0.015em",
               }}
@@ -215,7 +215,7 @@ export default function Hero() {
                 onClick={() =>
                   document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })
                 }
-                className="font-helvetica font-black uppercase tracking-wider text-sm px-8 h-14 flex items-center gap-3"
+                className="font-helvetica font-black uppercase tracking-wider text-xs px-7 h-12 flex items-center gap-3"
                 style={{
                   background: "#D94E28",
                   border: "4px solid #D94E28",
@@ -235,10 +235,10 @@ export default function Hero() {
 
               {/* 2. GitHub — solid white, border matches Hire Me weight */}
               <a
-                href="https://github.com/"
+                href="https://github.com/ruknabh"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-12 h-12 flex items-center justify-center transition-all duration-200"
+                className="w-10 h-10 flex items-center justify-center transition-all duration-200"
                 style={{
                   background: "#ffffff",
                   border: "4px solid #ffffff",
@@ -293,14 +293,14 @@ export default function Hero() {
                   <span
                     className="font-helvetica font-black leading-none"
                     style={{
-                      fontSize: "clamp(1.3rem, 2.5vw, 1.85rem)",
+                      fontSize: "clamp(1.05rem, 2vw, 1.48rem)",
                       color: i === 0 ? "#D94E28" : "rgba(255,255,255,0.92)",
                     }}
                   >
                     {value}
                   </span>
                   <span
-                    className="font-helvetica font-bold text-[8px] uppercase tracking-[0.32em]"
+                    className="font-helvetica font-bold text-[6.5px] uppercase tracking-[0.32em]"
                     style={{ color: "rgba(255,255,255,0.5)" }}
                   >
                     {label}
@@ -322,7 +322,7 @@ export default function Hero() {
         className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-20 group"
       >
         <span
-          className="font-garamond italic text-sm tracking-wide"
+          className="font-garamond italic text-xs tracking-wide"
           style={{ color: "rgba(255,255,255,0.2)" }}
         >
           scroll to explore

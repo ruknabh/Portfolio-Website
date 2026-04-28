@@ -20,8 +20,7 @@ const backend = [
   { name: "PostgreSQL", icon: "https://cdn.simpleicons.org/postgresql/1A1A1A" },
   { name: "MongoDB",    icon: "https://cdn.simpleicons.org/mongodb/1A1A1A" },
   { name: "Redis",      icon: "https://cdn.simpleicons.org/redis/1A1A1A" },
-  { name: "GraphQL",    icon: "https://cdn.simpleicons.org/graphql/1A1A1A" },
-  { name: "Python",     icon: "https://cdn.simpleicons.org/python/1A1A1A" },
+
 ];
 
 const tooling = [

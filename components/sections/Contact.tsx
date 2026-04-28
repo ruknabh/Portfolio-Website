@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import {
   Github, Linkedin, Instagram, Twitter,
   Mail, FileDown, ArrowRight, X, Download,
@@ -81,8 +81,6 @@ function ResumeModal({
 
 /* ─── Contact section ────────────────────────────────────────────────────── */
 export default function Contact() {
-  const ref = useRef<HTMLDivElement>(null);
-
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
   const [submitted, setSubmitted] = useState(false);
   const [resumeOpen, setResumeOpen] = useState(false);
@@ -107,11 +105,11 @@ export default function Contact() {
   };
 
   const socials = [
-    { icon: Github,    label: "GitHub",    href: "https://github.com/" },
-    { icon: Linkedin,  label: "LinkedIn",  href: "https://linkedin.com/in/" },
+    { icon: Github,    label: "GitHub",    href: "https://github.com/ruknabh" },
+    { icon: Linkedin,  label: "LinkedIn",  href: "https://www.linkedin.com/in/ruknabh-bhattacharyya-8b182b281/" },
     { icon: Instagram, label: "Instagram", href: "https://instagram.com/" },
-    { icon: Twitter,   label: "Twitter",   href: "https://twitter.com/" },
-    { icon: Mail,      label: "Email",     href: "mailto:your@email.com" },
+    { icon: Twitter,   label: "Twitter",   href: "https://x.com/ruknabh" },
+    { icon: Mail,      label: "Email",     href: "mailto:ruknabhbhattacharyya009@gmail.com" },
   ];
 
   /* Transparent inputs with bold border */
@@ -129,7 +127,6 @@ export default function Contact() {
       />
 
       <section
-        ref={ref}
         id="contact"
         className="relative bg-accent-orange px-8 py-28 md:py-36 overflow-hidden"
       >
@@ -172,8 +169,6 @@ export default function Contact() {
                 <br />
                 something...
               </h2>
-
-              
 
               {/* Rule */}
               <div className="w-14 h-1.5 bg-background" />
@@ -351,7 +346,7 @@ export default function Contact() {
                           border-4 border-background
                           font-helvetica font-black text-xs uppercase tracking-widest
                           shadow-[6px_6px_0_0] shadow-foreground/30
-                          hover:translate-x-1.5over:translate-y-[6px] hover:shadow-none
+                          hover:translate-x-1.5 hover:translate-y-[6px] hover:shadow-none
                           transition-all duration-200
                         "
                       >

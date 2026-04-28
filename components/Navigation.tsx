@@ -22,7 +22,7 @@ export default function Navigation() {
               >
                 <a
                   href={`#${item}`}
-                  className="relative group transition-colors duration-300 font-garamond text-base md:text-xl tracking-wide capitalize"
+                  className="relative group transition-colors duration-300 font-garamond text-base md:text-md tracking-wide capitalize"
                   style={{ color: "rgba(255,255,255,0.6)" }}
                   onMouseEnter={(e) => (e.currentTarget.style.color = "#D94E28")}
                   onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.6)")}
