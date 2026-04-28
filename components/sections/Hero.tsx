@@ -24,8 +24,12 @@ function StarField() {
     resize();
     window.addEventListener("resize", resize);
 
+    // Fewer stars on mobile to save GPU
+    const isMobile = window.innerWidth < 768;
+    const starCount = isMobile ? 120 : 240;
+
     type Star = { x: number; y: number; r: number; a: number; da: number; dx: number; dy: number };
-    const stars: Star[] = Array.from({ length: 240 }, () => ({
+    const stars: Star[] = Array.from({ length: starCount }, () => ({
       x: Math.random() * window.innerWidth,
       y: Math.random() * window.innerHeight,
       r: Math.random() * 1.1 + 0.15,
@@ -84,9 +88,9 @@ export default function Hero() {
       {/* Particle stars */}
       <StarField />
 
-      {/* Film-grain texture */}
+      {/* Film-grain texture — hidden on mobile for perf */}
       <div
-        className="absolute inset-0 pointer-events-none z-0"
+        className="absolute inset-0 pointer-events-none z-0 hidden sm:block"
         style={{
           opacity: 0.05,
           backgroundImage:
@@ -95,28 +99,24 @@ export default function Hero() {
         }}
       />
 
-      {/* ── Planet arc ── */}
+      {/* ── Planet arc ──
+          Desktop: right-side arc (original)
+          Mobile: top-right corner, smaller, more transparent
+      ── */}
+      {/* DESKTOP planet */}
       <div
-        className="absolute z-5"
+        className="absolute z-5 hidden md:block"
         style={{
           width: "140vh",
           height: "150vh",
-
           top: "50%",
           right: 0,
-
-          // 🔧 POSITION CONTROL
           transform: "translate(45%, -50%)",
-
           pointerEvents: "none",
-
-          // ✅ smoother, more natural fade
           WebkitMaskImage:
             "radial-gradient(ellipse 80% 70% at 70% 50%, black 55%, transparent 100%)",
           maskImage:
             "radial-gradient(ellipse 80% 70% at 70% 50%, black 55%, transparent 100%)",
-
-          // very subtle edge smoothing
           filter: "blur(0.15px)",
         }}
       >
@@ -125,10 +125,32 @@ export default function Hero() {
         </div>
       </div>
 
+      {/* MOBILE planet — sits top-right as a background element */}
+      <div
+        className="absolute z-5 block md:hidden"
+        style={{
+          width: "105vw",
+          height: "105vw",
+          top: "-10vw",
+          right: "-30vw",
+          pointerEvents: "none",
+          WebkitMaskImage:
+            "radial-gradient(ellipse 75% 75% at 60% 40%, black 30%, transparent 85%)",
+          maskImage:
+            "radial-gradient(ellipse 75% 75% at 60% 40%, black 30%, transparent 85%)",
+          opacity: 0.55,
+        }}
+      >
+        <div style={{ width: "100%", height: "100%", pointerEvents: "none" }}>
+          <PlanetModel />
+        </div>
+      </div>
+
       {/* ── Main content ── */}
-      <div className="relative z-10 w-full max-w-6xl mx-auto px-6 pt-28 pb-40">
-        <div className="max-w-[54%]">
-          <div className="flex flex-col gap-9">
+      <div className="relative z-10 w-full max-w-6xl mx-auto px-5 sm:px-6 pt-28 pb-40 sm:pt-28 sm:pb-40">
+        {/* On mobile: full width. On desktop: 54% */}
+        <div className="w-full md:max-w-[54%]">
+          <div className="flex flex-col gap-7 sm:gap-9">
 
             {/* Eyebrow label */}
             <motion.div
@@ -139,7 +161,7 @@ export default function Hero() {
             >
               <span className="w-8 h-px bg-accent-orange" style={{ height: "2px" }} />
               <span
-                className="font-helvetica text-[8.5px] uppercase tracking-[0.32em] font-bold"
+                className="font-helvetica text-[8px] sm:text-[8.5px] uppercase tracking-[0.28em] sm:tracking-[0.32em] font-bold"
                 style={{ color: "rgba(255,255,255,0.62)" }}
               >
                 Full Stack Developer · Freelance
@@ -157,7 +179,7 @@ export default function Hero() {
                     transition={{ duration: 0.75, delay: i * 0.045, ease: [0.6, 0.01, 0.05, 0.95] }}
                     className="inline-block"
                     style={{
-                      fontSize: "clamp(1.5rem, 3.8vw, 2.7rem)",
+                      fontSize: "clamp(1.2rem, 4.5vw, 2.7rem)",
                       color: "rgba(255,255,255,0.7)",
                     }}
                   >
@@ -175,7 +197,7 @@ export default function Hero() {
                     transition={{ duration: 0.85, delay: 0.32 + i * 0.075, ease: [0.6, 0.01, 0.05, 0.95] }}
                     className="inline-block"
                     style={{
-                      fontSize: "clamp(3.4rem, 9.2vw, 7rem)",
+                      fontSize: "clamp(2.8rem, 14vw, 7rem)",
                       color: "#ffffff",
                       textShadow: "4px 4px 0px rgba(217,78,40,0.52)",
                     }}
@@ -191,9 +213,9 @@ export default function Hero() {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1.05, duration: 0.6, ease: [0.6, 0.01, 0.05, 0.95] }}
-              className="font-helvetica font-bold leading-relaxed max-w-[22rem]"
+              className="font-helvetica font-bold leading-relaxed max-w-xs sm:max-w-sm md:max-w-88"
               style={{
-                fontSize: "clamp(0.65rem, 0.88vw, 0.75rem)",
+                fontSize: "clamp(0.68rem, 2.2vw, 0.75rem)",
                 color: "rgba(255,255,255,0.55)",
                 letterSpacing: "0.015em",
               }}
@@ -208,19 +230,18 @@ export default function Hero() {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1.28, duration: 0.6, ease: [0.6, 0.01, 0.05, 0.95] }}
-              className="flex items-center gap-5"
+              className="flex items-center gap-4 sm:gap-5"
             >
-              {/* 1. Hire Me — no hover animation, with bouncing arrow */}
+              {/* Hire Me */}
               <button
                 onClick={() =>
                   document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })
                 }
-                className="font-helvetica font-black uppercase tracking-wider text-xs px-7 h-12 flex items-center gap-3"
+                className="font-helvetica font-black uppercase tracking-wider text-xs px-5 sm:px-7 h-11 sm:h-12 flex items-center gap-3"
                 style={{
                   background: "#D94E28",
                   border: "4px solid #D94E28",
                   color: "#fff",
-
                 }}
               >
                 Hire Me
@@ -233,17 +254,16 @@ export default function Hero() {
                 </motion.span>
               </button>
 
-              {/* 2. GitHub — solid white, border matches Hire Me weight */}
+              {/* GitHub */}
               <a
                 href="https://github.com/ruknabh"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 flex items-center justify-center transition-all duration-200"
+                className="w-10 h-10 sm:w-10 sm:h-10 flex items-center justify-center transition-all duration-200"
                 style={{
                   background: "#ffffff",
                   border: "4px solid #ffffff",
                   color: "#07070f",
-
                 }}
                 onMouseEnter={(e) => {
                   const el = e.currentTarget as HTMLElement;
@@ -265,11 +285,12 @@ export default function Hero() {
               </a>
             </motion.div>
 
+            {/* Stats */}
             <motion.div
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1.52, duration: 0.55 }}
-              className="flex items-center gap-10 pt-1"
+              className="flex items-center gap-7 sm:gap-10 pt-1"
             >
               {[
                 { value: "2+", label: "Years exp." },
@@ -281,11 +302,11 @@ export default function Hero() {
                     <div
                       className="absolute"
                       style={{
-                        left: "-1.25rem",
+                        left: "-0.875rem",
                         top: "50%",
                         transform: "translateY(-50%)",
                         width: "1px",
-                        height: "2rem",
+                        height: "1.75rem",
                         background: "rgba(255,255,255,0.15)",
                       }}
                     />
@@ -293,15 +314,18 @@ export default function Hero() {
                   <span
                     className="font-helvetica font-black leading-none"
                     style={{
-                      fontSize: "clamp(1.05rem, 2vw, 1.48rem)",
+                      fontSize: "clamp(0.95rem, 4vw, 1.48rem)",
                       color: i === 0 ? "#D94E28" : "rgba(255,255,255,0.92)",
                     }}
                   >
                     {value}
                   </span>
                   <span
-                    className="font-helvetica font-bold text-[6.5px] uppercase tracking-[0.32em]"
-                    style={{ color: "rgba(255,255,255,0.5)" }}
+                    className="font-helvetica font-bold uppercase tracking-[0.28em]"
+                    style={{
+                      fontSize: "clamp(6px, 1.6vw, 6.5px)",
+                      color: "rgba(255,255,255,0.5)",
+                    }}
                   >
                     {label}
                   </span>
@@ -319,7 +343,7 @@ export default function Hero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 2, duration: 0.6 }}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-20 group"
+        className="absolute bottom-8 sm:bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-20 group"
       >
         <span
           className="font-garamond italic text-xs tracking-wide"

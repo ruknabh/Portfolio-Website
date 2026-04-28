@@ -47,7 +47,6 @@ const projects = [
 /* ─── Project card ───────────────────────────────────────────────────────── */
 function ProjectCard({
   project,
-  index,
 }: {
   project: (typeof projects)[0];
   index: number;
@@ -57,54 +56,40 @@ function ProjectCard({
       className="grid grid-cols-1 lg:grid-cols-[300px_1fr] border-4 border-white/10"
       style={{ background: "#0e0e0e" }}
     >
-      {/* LEFT — compact 16:9 thumbnail, fixed width on desktop */}
-      <div className="relative border-b-4 lg:border-b-0 lg:border-r-4 border-white/10 overflow-hidden"
-        style={{
-          /* 16:9 on mobile (full width), fixed height on desktop to match column */
-          aspectRatio: "16 / 9",
-        }}
+      {/* Thumbnail — 16:9 on mobile, fixed column on desktop */}
+      <div
+        className="relative border-b-4 lg:border-b-0 lg:border-r-4 border-white/10 overflow-hidden"
+        style={{ aspectRatio: "16 / 9" }}
       >
         <img
           src={project.image}
           alt={project.title}
-          /*
-            width/height hints let the browser allocate space before the image
-            loads, eliminating layout shift. Actual display size is ~300×169px
-            on desktop — much lighter than a full half-panel.
-          */
           width={600}
           height={338}
           className="absolute inset-0 w-full h-full object-cover opacity-80"
           loading="lazy"
           decoding="async"
         />
-
-        {/* Subtle darkening at the bottom only */}
         <div className="absolute inset-0 bg-linear-to-t from-black/50 to-transparent" />
 
-        {/* Tag — always visible */}
         <span className="absolute top-3 left-3 font-helvetica font-black text-[8px] uppercase tracking-widest px-2.5 py-1 bg-accent-orange text-white leading-none">
           {project.tag}
         </span>
 
-        {/* Ghost number bottom-right */}
         <span className="absolute bottom-2 right-3 font-helvetica font-black text-4xl leading-none text-white/8 select-none pointer-events-none">
           {project.number}
         </span>
       </div>
 
-      {/* RIGHT — description takes all remaining space */}
-      <div className="flex flex-col justify-between p-7 md:p-8 gap-6">
-
-        {/* Top block */}
-        <div className="flex flex-col gap-4">
+      {/* Content */}
+      <div className="flex flex-col justify-between p-5 sm:p-7 md:p-8 gap-5 sm:gap-6">
+        <div className="flex flex-col gap-3 sm:gap-4">
 
           {/* Title row */}
           <div className="flex items-start justify-between gap-4">
-            <h3 className="font-helvetica font-black text-xl md:text-2xl uppercase tracking-tight text-white leading-tight">
+            <h3 className="font-helvetica font-black text-lg sm:text-xl md:text-2xl uppercase tracking-tight text-white leading-tight">
               {project.title}
             </h3>
-            {/* Inline number label — light, small */}
             <span className="font-helvetica font-black text-[10px] uppercase tracking-widest text-white/15 shrink-0 mt-1">
               {project.number}
             </span>
@@ -113,8 +98,8 @@ function ProjectCard({
           {/* Orange rule */}
           <div className="w-8 h-0.5 bg-accent-orange" />
 
-          {/* Description — prominent, easy to read */}
-          <p className="font-helvetica font-bold text-sm md:text-[0.92rem] leading-[1.85] text-white/72">
+          {/* Description */}
+          <p className="font-helvetica font-bold text-sm leading-[1.8] text-white/72">
             {project.description}
           </p>
 
@@ -140,7 +125,7 @@ function ProjectCard({
               rel="noopener noreferrer"
               className="
                 inline-flex items-center gap-2
-                px-5 py-2.5
+                px-4 sm:px-5 py-2.5
                 bg-white text-[#0e0e0e]
                 border-4 border-white
                 font-helvetica font-black text-[9px] uppercase tracking-widest
@@ -164,7 +149,6 @@ function ProjectCard({
             <Github className="w-3.5 h-3.5" />
           </a>
         </div>
-
       </div>
     </div>
   );
@@ -174,7 +158,6 @@ function ProjectCard({
 export default function Projects() {
   const wrapperRef = useRef<HTMLDivElement>(null);
 
-  /* Preserved scroll-rise animation — single listener, no per-card overhead */
   const { scrollYProgress } = useScroll({
     target: wrapperRef,
     offset: ["start end", "start start"],
@@ -197,7 +180,7 @@ export default function Projects() {
           transformOrigin: "bottom center",
           willChange: "transform",
         }}
-        className="relative bg-[#111111] px-6 md:px-12 py-24 md:py-32 overflow-hidden mx-auto"
+        className="relative bg-[#111111] px-4 sm:px-6 md:px-12 py-20 md:py-32 overflow-hidden mx-auto"
       >
         <div className="relative max-w-6xl mx-auto">
 
@@ -206,22 +189,22 @@ export default function Projects() {
             Selected work
           </p>
 
-          <div className="flex items-end gap-6 flex-wrap mb-14 md:mb-18">
-            <h2 className="font-garamond text-6xl md:text-7xl tracking-tight leading-none text-white">
+          <div className="flex items-end gap-4 sm:gap-6 flex-wrap mb-12 md:mb-18">
+            <h2 className="font-garamond text-5xl sm:text-6xl md:text-7xl tracking-tight leading-none text-white">
               Projects
             </h2>
-            <div className="flex-1 min-w-12 h-1.5 bg-accent-orange mb-2" />
+            <div className="flex-1 min-w-10 h-1.5 bg-accent-orange mb-2" />
           </div>
 
           {/* Cards */}
-          <div className="flex flex-col gap-5">
+          <div className="flex flex-col gap-4 sm:gap-5">
             {projects.map((project, i) => (
               <ProjectCard key={project.number} project={project} index={i} />
             ))}
           </div>
 
           {/* Footer */}
-          <div className="mt-12 flex items-center gap-5">
+          <div className="mt-10 sm:mt-12 flex items-center gap-5">
             <div className="flex-1 h-px bg-white/8" />
             <a
               href="https://github.com/ruknabh?tab=repositories"

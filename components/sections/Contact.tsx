@@ -30,13 +30,13 @@ function ResumeModal({
             onClick={onCancel}
           />
 
-          <div className="fixed inset-0 z-50 flex items-center justify-center px-6 pointer-events-none">
+          <div className="fixed inset-0 z-50 flex items-center justify-center px-5 pointer-events-none">
             <motion.div
               initial={{ opacity: 0, scale: 0.9, y: 24 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 24 }}
               transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
-              className="pointer-events-auto bg-background border-4 border-foreground shadow-[10px_10px_0_0] shadow-accent-orange w-full max-w-sm p-8 relative"
+              className="pointer-events-auto bg-background border-4 border-foreground shadow-[10px_10px_0_0] shadow-accent-orange w-full max-w-sm p-6 sm:p-8 relative"
             >
               <button
                 onClick={onCancel}
@@ -45,7 +45,6 @@ function ResumeModal({
                 <X className="w-4 h-4" />
               </button>
 
-              {/* Icon block */}
               <div className="w-12 h-12 bg-accent-orange border-4 border-foreground flex items-center justify-center mb-6 shadow-[3px_3px_0_0] shadow-foreground">
                 <Download className="w-5 h-5 text-background" />
               </div>
@@ -99,7 +98,7 @@ export default function Contact() {
   const handleResumeConfirm = () => {
     setResumeOpen(false);
     const link = document.createElement("a");
-    link.href = "/resume.pdf"; // ← swap with actual path
+    link.href = "/resume.pdf";
     link.download = "Ruknabh_Bhattacharyya_Resume.pdf";
     link.click();
   };
@@ -112,9 +111,8 @@ export default function Contact() {
     { icon: Mail,      label: "Email",     href: "mailto:ruknabhbhattacharyya009@gmail.com" },
   ];
 
-  /* Transparent inputs with bold border */
   const inputCls =
-    "w-full px-5 py-4 bg-transparent border-4 border-background/40 " +
+    "w-full px-4 sm:px-5 py-3.5 sm:py-4 bg-transparent border-4 border-background/40 " +
     "font-helvetica font-bold text-sm text-background placeholder:text-background/30 " +
     "focus:outline-none focus:border-background transition-colors duration-200";
 
@@ -128,7 +126,7 @@ export default function Contact() {
 
       <section
         id="contact"
-        className="relative bg-accent-orange px-8 py-28 md:py-36 overflow-hidden"
+        className="relative bg-accent-orange px-5 sm:px-8 py-20 sm:py-28 md:py-36 overflow-hidden"
       >
         {/* Dot-grid texture */}
         <div
@@ -147,13 +145,13 @@ export default function Contact() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="font-helvetica font-bold text-xs uppercase tracking-[0.4em] text-background/60 mb-6"
+            className="font-helvetica font-bold text-xs uppercase tracking-[0.4em] text-background/60 mb-5 sm:mb-6"
           >
             Get in touch
           </motion.p>
 
-          {/* Two-column grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.15fr] gap-16 lg:gap-24 items-start">
+          {/* Two-column grid — single col on mobile, two col on lg */}
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.15fr] gap-12 sm:gap-16 lg:gap-24 items-start">
 
             {/* ── LEFT: heading + copy + socials + resume ── */}
             <motion.div
@@ -161,10 +159,13 @@ export default function Contact() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-              className="flex flex-col gap-8"
+              className="flex flex-col gap-7 sm:gap-8"
             >
-              {/* Big bold Helvetica heading — authentic brutalist tone */}
-              <h2 className="font-black text-[clamp(2.8rem,6vw,4.8rem)] leading-[0.88] uppercase tracking-tight text-background">
+              {/* Heading */}
+              <h2
+                className="font-black leading-[0.88] uppercase tracking-tight text-background"
+                style={{ fontSize: "clamp(2.4rem, 9vw, 4.8rem)" }}
+              >
                 Let's build
                 <br />
                 something...
@@ -198,7 +199,7 @@ export default function Contact() {
                           transition-all duration-200
                         "
                       >
-                        <Icon className="w-4.5 h-4.5" />
+                        <Icon className="w-4 h-4" />
                       </a>
                     );
                   })}
@@ -214,7 +215,7 @@ export default function Contact() {
                   onClick={() => setResumeOpen(true)}
                   className="
                     self-start inline-flex items-center gap-3
-                    px-6 py-3.5
+                    px-5 sm:px-6 py-3 sm:py-3.5
                     bg-background text-foreground
                     border-4 border-background
                     font-helvetica font-black text-xs uppercase tracking-widest
@@ -238,14 +239,13 @@ export default function Contact() {
             >
               <AnimatePresence mode="wait">
                 {submitted ? (
-                  /* Success */
                   <motion.div
                     key="success"
                     initial={{ opacity: 0, scale: 0.96 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.35 }}
-                    className="flex flex-col items-start gap-5 py-20"
+                    className="flex flex-col items-start gap-5 py-14 sm:py-20"
                   >
                     <div className="w-14 h-14 bg-background border-4 border-background flex items-center justify-center shadow-[4px_4px_0_0] shadow-foreground/30">
                       <span className="font-helvetica font-black text-foreground text-xl leading-none">✓</span>
@@ -258,16 +258,15 @@ export default function Contact() {
                     </p>
                   </motion.div>
                 ) : (
-                  /* Form */
                   <motion.form
                     key="form"
                     onSubmit={handleSubmit}
-                    className="space-y-5"
+                    className="space-y-4 sm:space-y-5"
                     initial={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                   >
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                      {/* Name */}
+                    {/* Name + Email — stacked on mobile, side-by-side on sm+ */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
                       <motion.div
                         initial={{ opacity: 0, y: 14 }}
                         whileInView={{ opacity: 1, y: 0 }}
@@ -287,7 +286,6 @@ export default function Contact() {
                         />
                       </motion.div>
 
-                      {/* Email */}
                       <motion.div
                         initial={{ opacity: 0, y: 14 }}
                         whileInView={{ opacity: 1, y: 0 }}
@@ -341,7 +339,7 @@ export default function Contact() {
                         type="submit"
                         className="
                           group inline-flex items-center gap-3
-                          mt-2 px-8 py-4
+                          mt-2 px-6 sm:px-8 py-3.5 sm:py-4
                           bg-background text-foreground
                           border-4 border-background
                           font-helvetica font-black text-xs uppercase tracking-widest

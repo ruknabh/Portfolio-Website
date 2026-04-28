@@ -39,11 +39,11 @@ export default function About() {
     <section
       ref={sectionRef}
       id="about"
-      className="relative py-24 md:py-32 overflow-hidden bg-background"
+      className="relative py-20 md:py-32 overflow-hidden bg-background"
     >
       <motion.div
         style={{ y: sectionY, opacity }}
-        className="relative z-10 w-full max-w-6xl mx-auto px-6"
+        className="relative z-10 w-full max-w-6xl mx-auto px-5 sm:px-6"
       >
         {/* ── Section header ── */}
         <motion.p
@@ -53,33 +53,33 @@ export default function About() {
           Who I am
         </motion.p>
 
-        <div className="flex items-end gap-6 flex-wrap mb-14 md:mb-20">
+        <div className="flex items-end gap-4 sm:gap-6 flex-wrap mb-12 md:mb-20">
           <motion.h2
             style={{ y: headingY }}
-            className="font-garamond text-6xl md:text-7xl tracking-tight leading-none"
+            className="font-garamond text-5xl sm:text-6xl md:text-7xl tracking-tight leading-none"
           >
             About Me
           </motion.h2>
 
           <motion.div
             style={{ scaleX: lineScale, originX: 0 }}
-            className="flex-1 min-w-15 h-1.5 bg-accent-orange mb-2"
+            className="flex-1 min-w-12 h-1.5 bg-accent-orange mb-2"
           />
         </div>
 
         {/* ── Main content grid ── */}
         <div className="grid grid-cols-1 lg:grid-cols-[45%_1fr] gap-10 lg:gap-14 items-start">
 
-          {/* LEFT — Profile card (shorter, wider) */}
+          {/* LEFT — Profile card */}
           <motion.div style={{ y: cardY }}>
             <div className="relative border-4 border-foreground bg-background shadow-[8px_8px_0_0_rgba(26,26,26,1)]">
               <div className="h-1.5 w-full bg-accent-orange" />
 
-              <div className="flex flex-col items-center gap-5 px-10 py-8">
+              <div className="flex flex-col items-center gap-5 px-6 sm:px-10 py-7 sm:py-8">
 
-                {/* Avatar — smaller */}
+                {/* Avatar */}
                 <div
-                  className="w-40 h-40 rounded-full overflow-hidden shrink-0"
+                  className="w-32 h-32 sm:w-40 sm:h-40 rounded-full overflow-hidden shrink-0"
                   style={{ boxShadow: "5px 5px 0px 0px rgba(26,26,26,1)" }}
                 >
                   <img
@@ -91,7 +91,7 @@ export default function About() {
 
                 {/* Name + title */}
                 <div className="text-center">
-                  <h3 className="font-helvetica font-black text-2xl uppercase tracking-tight text-foreground leading-tight">
+                  <h3 className="font-helvetica font-black text-xl sm:text-2xl uppercase tracking-tight text-foreground leading-tight">
                     Ruknabh Bhattacharyya
                   </h3>
                   <p className="font-helvetica font-bold text-[10px] uppercase tracking-[0.3em] text-accent-orange mt-2">
@@ -131,10 +131,10 @@ export default function About() {
           {/* RIGHT — Copy + personal details */}
           <motion.div
             style={{ y: bodyY }}
-            className="flex flex-col justify-start gap-8 lg:pt-2"
+            className="flex flex-col justify-start gap-7 sm:gap-8 lg:pt-2"
           >
             {/* Pull-quote */}
-            <p className="font-garamond text-3xl md:text-4xl lg:text-[2.6rem] leading-tight text-foreground tracking-tight">
+            <p className="font-garamond text-2xl sm:text-3xl md:text-4xl lg:text-[2.6rem] leading-tight text-foreground tracking-tight">
               I build things for the web — fast, clean, and with an eye for design.
             </p>
 
@@ -151,7 +151,7 @@ export default function About() {
               work together.
             </p>
 
-            {/* Personal details — plain key-value, same style as card meta */}
+            {/* Personal details */}
             <dl className="space-y-3.5">
               {personal.map(({ label, value }) => (
                 <div key={label} className="flex items-baseline gap-6">

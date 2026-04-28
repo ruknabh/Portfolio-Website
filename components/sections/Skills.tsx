@@ -20,7 +20,6 @@ const backend = [
   { name: "PostgreSQL", icon: "https://cdn.simpleicons.org/postgresql/1A1A1A" },
   { name: "MongoDB",    icon: "https://cdn.simpleicons.org/mongodb/1A1A1A" },
   { name: "Redis",      icon: "https://cdn.simpleicons.org/redis/1A1A1A" },
-
 ];
 
 const tooling = [
@@ -35,22 +34,21 @@ const tooling = [
 type Tech = { name: string; icon: string };
 
 /* ─── Single chip ────────────────────────────────────────────────────────── */
-function TechChip({ tech }: { tech: Tech }) {
+function TechChip({ tech, small = false }: { tech: Tech; small?: boolean }) {
   return (
-    <div className="flex flex-col items-center gap-3.5 mx-8 shrink-0 group cursor-default select-none">
+    <div className={`flex flex-col items-center gap-2.5 sm:gap-3.5 shrink-0 group cursor-default select-none ${small ? "mx-4 sm:mx-8" : "mx-5 sm:mx-8"}`}>
       <div
-        className="
-          w-24 h-24
+        className={`
+          ${small ? "w-16 h-16 sm:w-24 sm:h-24 p-3 sm:p-4" : "w-20 h-20 sm:w-24 sm:h-24 p-3.5 sm:p-4"}
           rounded-full
           border-4 border-foreground
           bg-background
           shadow-[4px_4px_0_0] shadow-foreground
           flex items-center justify-center
-          p-4
           transition-all duration-300
           group-hover:shadow-accent-orange
           group-hover:-translate-y-2
-        "
+        `}
       >
         <img
           src={tech.icon}
@@ -62,7 +60,7 @@ function TechChip({ tech }: { tech: Tech }) {
           draggable={false}
         />
       </div>
-      <span className="font-helvetica text-[10px] uppercase tracking-widest font-bold text-foreground/40 group-hover:text-foreground transition-colors duration-300">
+      <span className="font-helvetica text-[8px] sm:text-[10px] uppercase tracking-widest font-bold text-foreground/40 group-hover:text-foreground transition-colors duration-300">
         {tech.name}
       </span>
     </div>
@@ -79,9 +77,6 @@ function MarqueeRow({
   direction: "left" | "right";
   scrollYProgress: ReturnType<typeof useScroll>["scrollYProgress"];
 }) {
-  // Each row travels 33.333% of its total width (one full copy) across the scroll range.
-  // direction="right" → starts at -33.333% and moves to 0% as you scroll down.
-  // direction="left"  → starts at 0% and moves to -33.333% as you scroll down.
   const x = useTransform(
     scrollYProgress,
     [0, 1],
@@ -91,17 +86,17 @@ function MarqueeRow({
   const items = [...techs, ...techs, ...techs];
 
   return (
-    <div className="relative w-full overflow-hidden py-4">
+    <div className="relative w-full overflow-hidden py-3 sm:py-4">
       {/* Edge fades */}
-      <div className="pointer-events-none absolute inset-y-0 left-0 w-32 z-10 bg-linear-to-r from-background to-transparent" />
-      <div className="pointer-events-none absolute inset-y-0 right-0 w-32 z-10 bg-linear-to-l from-background to-transparent" />
+      <div className="pointer-events-none absolute inset-y-0 left-0 w-16 sm:w-32 z-10 bg-linear-to-r from-background to-transparent" />
+      <div className="pointer-events-none absolute inset-y-0 right-0 w-16 sm:w-32 z-10 bg-linear-to-l from-background to-transparent" />
 
       <motion.div
         className="flex items-end"
         style={{ width: "max-content", x }}
       >
         {items.map((tech, i) => (
-          <TechChip key={`${tech.name}-${i}`} tech={tech} />
+          <TechChip key={`${tech.name}-${i}`} tech={tech} small />
         ))}
       </motion.div>
     </div>
@@ -111,11 +106,11 @@ function MarqueeRow({
 /* ─── Row label ──────────────────────────────────────────────────────────── */
 function RowLabel({ number, label }: { number: string; label: string }) {
   return (
-    <div className="flex items-center gap-5 px-6 max-w-6xl mx-auto mb-4">
-      <span className="font-helvetica text-[11px] uppercase tracking-[0.4em] font-bold text-foreground/25">
+    <div className="flex items-center gap-3 sm:gap-5 px-5 sm:px-6 max-w-6xl mx-auto mb-3 sm:mb-4">
+      <span className="font-helvetica text-[10px] sm:text-[11px] uppercase tracking-[0.4em] font-bold text-foreground/25">
         {number}
       </span>
-      <span className="font-helvetica text-sm uppercase tracking-[0.25em] font-black text-foreground/50">
+      <span className="font-helvetica text-xs sm:text-sm uppercase tracking-[0.25em] font-black text-foreground/50">
         {label}
       </span>
       <div className="flex-1 h-px bg-foreground/10" />
@@ -127,18 +122,15 @@ function RowLabel({ number, label }: { number: string; label: string }) {
 export default function Skills() {
   const sectionRef = useRef<HTMLDivElement>(null);
 
-  // Track scroll progress across the entire section.
-  // "start end" = when section top enters bottom of viewport (progress = 0)
-  // "end start" = when section bottom leaves top of viewport (progress = 1)
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start end", "end start"],
   });
 
   return (
-    <section ref={sectionRef} id="skills" className="py-24 md:py-32 overflow-hidden">
+    <section ref={sectionRef} id="skills" className="py-20 md:py-32 overflow-hidden">
       {/* Header */}
-      <div className="max-w-6xl mx-auto px-6 mb-16 md:mb-20">
+      <div className="max-w-6xl mx-auto px-5 sm:px-6 mb-14 md:mb-20">
         <motion.p
           initial={{ opacity: 0, x: -20 }}
           whileInView={{ opacity: 1, x: 0 }}
@@ -149,13 +141,13 @@ export default function Skills() {
           What I work with
         </motion.p>
 
-        <div className="flex items-end gap-6 flex-wrap">
+        <div className="flex items-end gap-4 sm:gap-6 flex-wrap">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="font-garamond text-6xl md:text-7xl leading-none"
+            className="font-garamond text-5xl sm:text-6xl md:text-7xl leading-none"
           >
             Skills
           </motion.h2>
@@ -166,13 +158,13 @@ export default function Skills() {
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
             style={{ originX: 0 }}
-            className="flex-1 min-w-15 h-1.5 bg-accent-orange mb-3"
+            className="flex-1 min-w-12 h-1.5 bg-accent-orange mb-3"
           />
         </div>
       </div>
 
       {/* Three scroll-driven rows */}
-      <div className="flex flex-col gap-14">
+      <div className="flex flex-col gap-10 sm:gap-14">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
