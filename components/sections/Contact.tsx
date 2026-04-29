@@ -128,14 +128,6 @@ export default function Contact() {
         id="contact"
         className="relative bg-accent-orange px-5 sm:px-8 py-20 sm:py-28 md:py-36 overflow-hidden"
       >
-        {/* Dot-grid texture */}
-        <div
-          className="pointer-events-none absolute inset-0 opacity-[0.07]"
-          style={{
-            backgroundImage: "radial-gradient(circle, #1A1A1A 1.5px, transparent 1.5px)",
-            backgroundSize: "28px 28px",
-          }}
-        />
 
         <div className="relative max-w-6xl mx-auto">
 
