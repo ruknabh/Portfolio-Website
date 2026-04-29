@@ -23,7 +23,7 @@ export default function About() {
 
   const meta = [
     { label: "Based in",   value: "Assam, India" },
-    { label: "Experience", value: "2+ Years" },
+    { label: "Experience", value: "2.5+ Years" },
     { label: "Stack",      value: "Full Stack" },
     { label: "Status",     value: "Freelance · Open" },
   ];
@@ -135,7 +135,7 @@ export default function About() {
           >
             {/* Pull-quote */}
             <p className="font-garamond text-2xl sm:text-3xl md:text-4xl lg:text-[2.6rem] leading-tight text-foreground tracking-tight">
-              I build things for the web — fast, clean, and with an eye for design.
+              Learning by building
             </p>
 
             {/* Accent divider */}
@@ -146,9 +146,9 @@ export default function About() {
 
             {/* Body */}
             <p className="font-helvetica font-bold text-sm md:text-base leading-relaxed text-foreground/60 max-w-xl">
-              Over the past two years I've worked across the full stack — shipping production
-              systems, collaborating with clients, and constantly refining how code and design
-              work together.
+              I’ve built and worked on projects including an asset management system and a client-facing web app.
+              A lot of it involved dealing with real issues like broken APIs, state bugs, backend logic going wrong; and fixing them step by step.
+              That’s the part I actually enjoy:)
             </p>
 
             {/* Personal details */}

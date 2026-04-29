@@ -23,7 +23,7 @@ const projects = [
     title: "Debate Arena",
     tag: "Real-time · Multiplayer",
     description:
-      "A live two-player debate platform where opponents argue any topic across three timed rounds. Each round is judged in real time by an AI, which scores arguments and delivers a final verdict — no human moderator needed.",
+      "A live two-player debate platform where opponents argue on any topic across three timed rounds. Each round is judged in real time by an AI, which scores arguments and delivers a final verdict.",
     tech: ["React", "Node.js", "Express", "Socket.IO", "Zustand", "Tailwind CSS", "OpenRouter API"],
     image: "/images/project-2.png",
     tryIt: "https://debate-arena-ruknabh.vercel.app/",
@@ -35,7 +35,7 @@ const projects = [
     title: "This Portfolio",
     tag: "Design · Frontend",
     description:
-      "A hand-crafted portfolio built around a brutalist editorial aesthetic — animated letter-by-letter hero type, a scroll-driven 3D lava planet rendered in WebGL, scroll-linked marquee skill rows, a parallax project panel, and a contact form — all wired together with scroll-reactive Framer Motion throughout.",
+      "Built entirely from scratch. Uses React Three Fiber to render a GLB 3D model with custom lighting and post-processing bloom. Scroll-driven animations throughout via Framer Motion, including a marquee tied directly to scroll velocity and a rising panel transition between sections.",
     tech: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Framer Motion", "Three.js", "React Three Fiber"],
     image: "/images/project-3.png",
     tryIt: "https://ruknabh-portfolio.vercel.app/",

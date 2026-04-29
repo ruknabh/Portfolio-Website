@@ -1,34 +1,37 @@
 "use client";
 
 import { motion, useScroll, useTransform } from "framer-motion";
+import Image from "next/image";
 import { useRef } from "react";
 
 const frontend = [
-  { name: "React",          icon: "https://cdn.simpleicons.org/react/1A1A1A" },
-  { name: "Next.js",        icon: "https://cdn.simpleicons.org/nextdotjs/1A1A1A" },
-  { name: "TypeScript",     icon: "https://cdn.simpleicons.org/typescript/1A1A1A" },
-  { name: "Tailwind CSS",   icon: "https://cdn.simpleicons.org/tailwindcss/1A1A1A" },
-  { name: "Framer Motion",  icon: "https://cdn.simpleicons.org/framer/1A1A1A" },
-  { name: "Three.js",       icon: "https://cdn.simpleicons.org/threedotjs/1A1A1A" },
-  { name: "JavaScript",     icon: "https://cdn.simpleicons.org/javascript/1A1A1A" },
-  { name: "HTML5",          icon: "https://cdn.simpleicons.org/html5/1A1A1A" },
+  { name: "React", icon: "/icons/react.svg" },
+  { name: "Next.js", icon: "/icons/nextdotjs.svg" },
+  { name: "TypeScript", icon: "/icons/typescript.svg" },
+  { name: "Tailwind CSS", icon: "/icons/tailwindcss.svg" },
+  { name: "Framer Motion", icon: "/icons/framer.svg" },
+  { name: "Three.js", icon: "/icons/threedotjs.svg" },
+  { name: "JavaScript", icon: "/icons/javascript.svg" },
+  { name: "HTML5", icon: "/icons/html5.svg" },
 ];
 
 const backend = [
-  { name: "Node.js",    icon: "https://cdn.simpleicons.org/nodedotjs/1A1A1A" },
-  { name: "Express",    icon: "https://cdn.simpleicons.org/express/1A1A1A" },
-  { name: "PostgreSQL", icon: "https://cdn.simpleicons.org/postgresql/1A1A1A" },
-  { name: "MongoDB",    icon: "https://cdn.simpleicons.org/mongodb/1A1A1A" },
-  { name: "Redis",      icon: "https://cdn.simpleicons.org/redis/1A1A1A" },
+  { name: "Node.js", icon: "/icons/nodedotjs.svg" },
+  { name: "Express", icon: "/icons/express.svg" },
+  { name: "MongoDB", icon: "/icons/mongodb.svg" },
+  { name: "MySQL", icon: "/icons/mysql.svg" },
+  { name: "Redis", icon: "/icons/redis.svg" },
+  { name: "Socket.IO", icon: "/icons/socketdotio.svg" },
 ];
 
 const tooling = [
-  { name: "Git",     icon: "https://cdn.simpleicons.org/git/1A1A1A" },
-  { name: "Docker",  icon: "https://cdn.simpleicons.org/docker/1A1A1A" },
-  { name: "Figma",   icon: "https://cdn.simpleicons.org/figma/1A1A1A" },
-  { name: "Vercel",  icon: "https://cdn.simpleicons.org/vercel/1A1A1A" },
-  { name: "Linux",   icon: "https://cdn.simpleicons.org/linux/1A1A1A" },
-  { name: "GitHub",  icon: "https://cdn.simpleicons.org/github/1A1A1A" },
+  { name: "Git", icon: "/icons/git.svg" },
+  { name: "Docker", icon: "/icons/docker.svg" },
+  { name: "Figma", icon: "/icons/figma.svg" },
+  { name: "Vercel", icon: "/icons/vercel.svg" },
+  { name: "Render", icon: "/icons/render.svg" },
+  { name: "Linux", icon: "/icons/linux.svg" },
+  { name: "GitHub", icon: "/icons/github.svg" },
 ];
 
 type Tech = { name: string; icon: string };
@@ -50,15 +53,15 @@ function TechChip({ tech, small = false }: { tech: Tech; small?: boolean }) {
           group-hover:-translate-y-2
         `}
       >
-        <img
-          src={tech.icon}
-          alt={tech.name}
-          width={52}
-          height={52}
-          className="w-full h-full object-contain"
-          loading="lazy"
-          draggable={false}
-        />
+        <Image
+  src={tech.icon}
+  alt={tech.name}
+  width={52}
+  height={52}
+  sizes="(max-width: 640px) 64px, 96px"
+  className="w-full h-full object-contain"
+  draggable={false}
+/>
       </div>
       <span className="font-helvetica text-[8px] sm:text-[10px] uppercase tracking-widest font-bold text-foreground/40 group-hover:text-foreground transition-colors duration-300">
         {tech.name}

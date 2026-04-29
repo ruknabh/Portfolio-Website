@@ -97,10 +97,12 @@ function CertificateThumbnail({
   src,
   company,
   onClick,
+  tall = false,
 }: {
   src: string;
   company: string;
   onClick: () => void;
+  tall?: boolean;
 }) {
   return (
     <button
@@ -110,7 +112,7 @@ function CertificateThumbnail({
       <img
         src={src}
         alt={`${company} Certificate`}
-        className="w-full h-24 sm:h-28 object-cover grayscale group-hover:grayscale-0 transition-all duration-300"
+        className={`w-full object-cover grayscale group-hover:grayscale-0 transition-all duration-300 ${tall ? "h-36" : "h-24"}`}
       />
       <div className="absolute inset-0 bg-foreground/55 group-hover:bg-foreground/20 flex items-center justify-center transition-all duration-200">
         <div className="flex flex-col items-center gap-1.5">
@@ -224,13 +226,13 @@ export default function Experience() {
                   {/* Divider */}
                   <div className="w-full h-px bg-foreground/12 mb-6 sm:mb-8" />
 
-                  {/* Bullets + Certificate
-                      Mobile: stacked (bullets first, cert below)
-                      Desktop: side-by-side grid
-                  */}
-                  <div className="grid grid-cols-1 md:grid-cols-[1fr_176px] gap-6 sm:gap-8 md:gap-10 mb-6 sm:mb-8">
+                  {/* Bullets + Certificate ─────────────────────────────
+                      Mobile  (< sm): bullets full-width, then cert full-width below
+                      Desktop (≥ sm): side-by-side grid, cert in right column
+                  ─────────────────────────────────────────────────────── */}
 
-                    {/* Bullet points */}
+                  {/* ── Bullets (always full width on mobile; left column on sm+) ── */}
+                  <div className="sm:grid sm:grid-cols-[1fr_176px] sm:gap-8 md:gap-10 mb-6 sm:mb-8">
                     <ul className="space-y-3 sm:space-y-4">
                       {exp.points.map((point, j) => (
                         <motion.li
@@ -249,8 +251,8 @@ export default function Experience() {
                       ))}
                     </ul>
 
-                    {/* Certificate */}
-                    <div className="flex flex-col gap-2.5">
+                    {/* Certificate — right column on sm+, hidden here on mobile */}
+                    <div className="hidden sm:flex flex-col gap-2.5">
                       <p className="font-helvetica font-black text-[9px] uppercase tracking-[0.3em] text-foreground/35">
                         Certificate
                       </p>
@@ -262,6 +264,21 @@ export default function Experience() {
                         }
                       />
                     </div>
+                  </div>
+
+                  {/* Certificate — full width below bullets, mobile only */}
+                  <div className="sm:hidden mb-6">
+                    <p className="font-helvetica font-black text-[9px] uppercase tracking-[0.3em] text-foreground/35 mb-2.5">
+                      Certificate
+                    </p>
+                    <CertificateThumbnail
+                      src={exp.certificate}
+                      company={exp.company}
+                      onClick={() =>
+                        setActiveCert({ src: exp.certificate, company: exp.company })
+                      }
+                      tall
+                    />
                   </div>
 
                   {/* Stack chips */}

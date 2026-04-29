@@ -221,9 +221,9 @@ export default function Hero() {
                 letterSpacing: "0.015em",
               }}
             >
-              I build things for the web — fast, clean,
+              I like building systems that don’t
               <br />
-              and with a sharp eye for design.
+              fall apart outside localhost.
             </motion.p>
 
             {/* CTAs */}
@@ -294,8 +294,9 @@ export default function Hero() {
               className="flex items-center gap-6 sm:gap-10 pt-1"
             >
               {[
-                { value: "2+", label: "Years exp." },
-                { value: "10+", label: "Projects" },
+                { value: "2.5+", label: "Years exp." },
+                { value: "5+", label: "Projects" },
+                { value: "20+", label: "Stack Tools" },
                 { value: "Open", label: "To Work" },
               ].map(({ value, label }, i) => (
                 <div key={label} className="relative flex flex-col gap-1.5">
@@ -344,13 +345,13 @@ export default function Hero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 2, duration: 0.6 }}
-        className="absolute bottom-8 sm:bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-20 group"
+        className="absolute bottom-8 sm:bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-30 group"
       >
         <span
-          className="font-garamond italic text-xs tracking-wide"
-          style={{ color: "rgba(255,255,255,0.2)" }}
+          className="font-garamond text-sm tracking-wide"
+          style={{ color: "rgba(255,255,255,0.55)" }}
         >
-          scroll to explore
+          Scroll to explore
         </span>
         <motion.div
           animate={{ y: [0, 7, 0] }}
@@ -358,7 +359,7 @@ export default function Hero() {
         >
           <ChevronDown
             className="w-5 h-5 transition-colors duration-300 group-hover:text-accent-orange"
-            style={{ color: "rgba(255,255,255,0.2)" }}
+            style={{ color: "rgba(255,255,255,0.55)" }}
           />
         </motion.div>
       </motion.button>
