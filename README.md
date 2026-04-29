@@ -4,11 +4,13 @@ Personal portfolio site. Built with Next.js, TypeScript, and a brutalist editori
 
 Live: [ruknabh-portfolio.vercel.app](https://ruknabh-portfolio.vercel.app)
 
+![Portfolio Screenshot](./screenshot.png)
+
 ---
 
 ## Stack
 
-**Framework** — Next.js 14 (App Router), TypeScript  
+**Framework** — Next.js 15 (App Router), TypeScript  
 **Styling** — Tailwind CSS, custom CSS variables  
 **Animation** — Framer Motion (scroll-driven + entrance animations)  
 **3D** — Three.js, React Three Fiber, Drei, postprocessing (Bloom)  
@@ -21,21 +23,25 @@ Live: [ruknabh-portfolio.vercel.app](https://ruknabh-portfolio.vercel.app)
 
 ```
 app/
-  page.tsx              # Root — assembles all sections
+  page.tsx                      # Root — assembles all sections
 components/
-  Navigation.tsx        # Sticky nav; hamburger menu on mobile
-  Hero.tsx              # Full-screen hero with animated name, 3D planet, starfield
-  About.tsx             # Profile card + bio, scroll-linked entrance
-  Projects.tsx          # Project cards with scroll-rise panel animation
-  Skills.tsx            # Scroll-driven marquee rows (Frontend / Backend / Tooling)
-  Experience.tsx        # Work cards with certificate lightbox
-  Contact.tsx           # Contact form + socials + resume download
+  Navigation.tsx                # Sticky nav; hamburger menu on mobile
+  Planetmodel.tsx               # Three.js lava planet GLB with Bloom post-processing
   Footer.tsx
-  Planetmodel.tsx       # Three.js lava planet GLB with Bloom post-processing
+  sections/
+    Hero.tsx                    # Full-screen hero with animated name, 3D planet, starfield
+    About.tsx                   # Profile card + bio, scroll-linked entrance
+    Projects.tsx                # Project cards with scroll-rise panel animation
+    Skills.tsx                  # Scroll-driven marquee rows (Frontend / Backend / Tooling)
+    Experience.tsx              # Work cards with certificate lightbox
+    Contact.tsx                 # Contact form + socials + resume download
+  ui/
+    button.tsx
+    card.tsx
 public/
-  models/               # lava_planet_optimized.glb
-  images/               # Profile photo, project screenshots, certificates
-  icons/                # SVG tech icons
+  models/                       # lava_planet_optimized.glb
+  images/                       # Profile photo, project screenshots, certificates
+  icons/                        # SVG tech icons
   resume.pdf
 ```
 
@@ -68,4 +74,4 @@ Requires Node 18+. No environment variables needed.
 
 ## License
 
-Code is open for reference. Don't copy the content (bio, images, certificates).
+Code is open for reference. Do not copy the content (bio, images, certificates).
