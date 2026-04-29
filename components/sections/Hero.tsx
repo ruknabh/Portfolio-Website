@@ -100,8 +100,7 @@ export default function Hero() {
       />
 
       {/* ── Planet arc ──
-          Desktop: right-side arc (original)
-          Mobile: top-right corner, smaller, more transparent
+          
       ── */}
       {/* DESKTOP planet */}
       <div
@@ -133,13 +132,13 @@ export default function Hero() {
           height: "115vw",
           top: "50%",
           right: 0,
-          transform: "translate(30%, -50%)",
+          transform: "translate(40%, -50%)",
           pointerEvents: "none",
           WebkitMaskImage:
             "radial-gradient(ellipse 70% 75% at 60% 50%, black 35%, transparent 80%)",
           maskImage:
             "radial-gradient(ellipse 70% 75% at 60% 50%, black 35%, transparent 80%)",
-          opacity: 0.5,
+          opacity: 0.9,
         }}
       >
         <div style={{ width: "100%", height: "100%", pointerEvents: "none" }}>
@@ -148,11 +147,14 @@ export default function Hero() {
       </div>
 
       {/* ── Main content ── */}
-      <div className="relative z-10 w-full max-w-6xl mx-auto px-5 sm:px-6 pt-24 pb-24 sm:pt-28 sm:pb-40">
-        {/* On mobile: full width but text stays left. On desktop: 54% */}
+      <div
+        className="relative z-10 w-full max-w-6xl mx-auto px-5 sm:px-6
+                   pt-32 pb-36
+                   sm:pt-28 sm:pb-40"
+      >
         <div className="w-full md:max-w-[54%]">
-          <div className="flex flex-col gap-7 sm:gap-9">
-
+          <div className="flex flex-col gap-9 sm:gap-9">
+ 
             {/* Eyebrow label */}
             <motion.div
               initial={{ opacity: 0, x: -20 }}
@@ -160,10 +162,14 @@ export default function Hero() {
               transition={{ delay: 0.3, duration: 0.55 }}
               className="flex items-center gap-3"
             >
-              <span className="w-8 h-px bg-accent-orange" style={{ height: "2px" }} />
+              <span className="w-8 bg-accent-orange" style={{ height: "2px" }} />
               <span
-                className="font-helvetica text-[8px] sm:text-[8.5px] uppercase tracking-[0.28em] sm:tracking-[0.32em] font-bold"
-                style={{ color: "rgba(255,255,255,0.62)" }}
+                className="font-helvetica font-bold uppercase"
+                style={{
+                  fontSize: "clamp(8px, 2.4vw, 8.5px)",
+                  letterSpacing: "0.28em",
+                  color: "rgba(255,255,255,0.62)",
+                }}
               >
                 Full Stack Developer · Freelance
               </span>
@@ -180,7 +186,7 @@ export default function Hero() {
                     transition={{ duration: 0.75, delay: i * 0.045, ease: [0.6, 0.01, 0.05, 0.95] }}
                     className="inline-block"
                     style={{
-                      fontSize: "clamp(1.2rem, 4.5vw, 2.7rem)",
+                      fontSize: "clamp(1.6rem, 4.5vw, 2.7rem)",
                       color: "rgba(255,255,255,0.7)",
                     }}
                   >
@@ -188,7 +194,7 @@ export default function Hero() {
                   </motion.span>
                 ))}
               </h1>
-
+ 
               <h1 className="font-helvetica font-black leading-[0.88] tracking-tight">
                 {"Ruknabh".split("").map((letter, i) => (
                   <motion.span
@@ -198,7 +204,8 @@ export default function Hero() {
                     transition={{ duration: 0.85, delay: 0.32 + i * 0.075, ease: [0.6, 0.01, 0.05, 0.95] }}
                     className="inline-block"
                     style={{
-                      fontSize: "clamp(2.8rem, 14vw, 7rem)",
+                      /* was clamp(2.8rem…) — bumped to 3.6rem for mobile */
+                      fontSize: "clamp(3.6rem, 14vw, 7rem)",
                       color: "#ffffff",
                       textShadow: "4px 4px 0px rgba(217,78,40,0.52)",
                     }}
@@ -209,6 +216,7 @@ export default function Hero() {
               </h1>
             </div>
 
+
             {/* Short descriptor */}
             <motion.p
               initial={{ opacity: 0, y: 16 }}
@@ -216,12 +224,12 @@ export default function Hero() {
               transition={{ delay: 1.05, duration: 0.6, ease: [0.6, 0.01, 0.05, 0.95] }}
               className="font-helvetica font-bold leading-relaxed max-w-xs sm:max-w-sm md:max-w-88"
               style={{
-                fontSize: "clamp(0.72rem, 2.2vw, 0.75rem)",
+                fontSize: "clamp(0.82rem, 2.2vw, 0.75rem)",
                 color: "rgba(255,255,255,0.55)",
                 letterSpacing: "0.015em",
               }}
             >
-              I like building systems that don’t
+              I like building systems that don't
               <br />
               fall apart outside localhost.
             </motion.p>
