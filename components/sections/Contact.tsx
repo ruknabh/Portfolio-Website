@@ -106,7 +106,7 @@ export default function Contact() {
   const socials = [
     { icon: Github,    label: "GitHub",    href: "https://github.com/ruknabh" },
     { icon: Linkedin,  label: "LinkedIn",  href: "https://www.linkedin.com/in/ruknabh-bhattacharyya-8b182b281/" },
-    { icon: Instagram, label: "Instagram", href: "https://instagram.com/" },
+    { icon: Instagram, label: "Instagram", href: "https://www.instagram.com/ruknabh/" },
     { icon: Twitter,   label: "Twitter",   href: "https://x.com/ruknabh" },
     { icon: Mail,      label: "Email",     href: "mailto:ruknabhbhattacharyya009@gmail.com" },
   ];
